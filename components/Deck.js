@@ -5,6 +5,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 class Deck extends Component {
     
     render(){
+        const { navigate } = this.props.navigation
+
         return (
             <View style={styles.container}>
                 <View style={styles.titlesContainer}>
@@ -13,7 +15,8 @@ class Deck extends Component {
                 </View>
                
 
-                <TouchableOpacity style={[styles.button, styles.buttonAdd]}>
+                <TouchableOpacity style={[styles.button, styles.buttonAdd]}
+                    onPress={() => navigate('AddQuestion')}>
                     <Text >Add card</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.button, styles.buttonAdd]}> 

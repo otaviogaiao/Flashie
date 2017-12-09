@@ -1,9 +1,15 @@
 import React from 'react'
 import { TabNavigator, StackNavigator } from 'react-navigation'
+import { Text } from 'react-native'
+import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons'
+
+
+import Deck from './components/Deck'
+import AddQuestion from './components/AddQuestion'
 import NewDeck from './components/NewDeck'
 import Decks from './components/Decks'
-import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons'
-import Deck from './components/Deck'
+
+
 
 const Tabs = TabNavigator({
     Decks: {
@@ -47,7 +53,16 @@ const Navigator = StackNavigator({
         }
     },
     Deck: {
-        screen: Deck
+        screen: Deck,
+        navigationOptions: {
+            title: 'Deck'
+        }
+    },
+    AddQuestion: {
+        screen: AddQuestion,
+        navigationOptions: {
+            title: 'Add question'
+        }
     }
 }, {
     headerMode: 'screen'
