@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, 
+    TextInput } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class AddQuestion extends Component {
 
@@ -13,39 +15,42 @@ class AddQuestion extends Component {
     }
 
     render(){
-        return (<View style={styles.container}>
-        <View style={styles.subContainer}>
-            <Text style={styles.title}>Whats your question?</Text>
-                <TextInput editable={true} style={styles.input}
-                placeholder='Type question here'
-                maxLength={100}
-                value={this.state.question}
-                multiline={true}
-                maxHeight={100}
-                onChangeText={(text) => {
-                    this.setState({question: text})
-                }}
-            />
-        </View>
-
-        <View style={styles.subContainer}>
-            <Text style={styles.title}>Whats your answer?</Text>
-                <TextInput editable={true} style={styles.input}
-                placeholder='Type answer here'
-                maxLength={100}
-                value={this.state.answer}
-                multiline={true}
-                maxHeight={100}
-                onChangeText={(text) => {
-                    this.setState({answer: text})
-                }}
+        return (
+        <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
+            contentContainerStyle={styles.container}>
+            <View style={styles.subContainer}>
+                <Text style={styles.title}>Whats your question?</Text>
+                    <TextInput editable={true} style={styles.input}
+                    placeholder='Type question here'
+                    maxLength={100}
+                    value={this.state.question}
+                    multiline={true}
+                    maxHeight={100}
+                    onChangeText={(text) => {
+                        this.setState({question: text})
+                    }}
                 />
-        </View>
+            </View>
 
-        <TouchableOpacity style={styles.button} onPress={this.submit}>
-            <Text style={{color: 'white'}}>Submit</Text>
-        </TouchableOpacity>
-      </View>)
+            <View style={styles.subContainer}>
+                <Text style={styles.title}>Whats your answer?</Text>
+                    <TextInput editable={true} style={styles.input}
+                    placeholder='Type answer here'
+                    maxLength={100}
+                    value={this.state.answer}
+                    multiline={true}
+                    maxHeight={100}
+                    onChangeText={(text) => {
+                        this.setState({answer: text})
+                    }}
+                    />
+            </View>
+
+            <TouchableOpacity style={styles.button} onPress={this.submit}>
+                <Text style={{color: 'white'}}>Submit</Text>
+            </TouchableOpacity>
+        
+      </KeyboardAwareScrollView>)
     }
 
 }

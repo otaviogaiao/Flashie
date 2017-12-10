@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class NewDeck extends Component {
 
@@ -13,7 +14,8 @@ class NewDeck extends Component {
 
     render(){
         return (
-              <View style={styles.container}>
+            <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
+                contentContainerStyle={styles.container}>
                 <Text style={styles.title}>Whats the title of your deck?</Text>
                     <TextInput editable={true} style={styles.input}
                     placeholder='Type title here'
@@ -26,7 +28,7 @@ class NewDeck extends Component {
                 <TouchableOpacity style={styles.button} onPress={this.submit}>
                     <Text style={{color: 'white'}}>Submit</Text>
                 </TouchableOpacity>
-              </View>
+              </KeyboardAwareScrollView>
             )
     }
 }

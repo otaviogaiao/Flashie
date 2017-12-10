@@ -8,6 +8,7 @@ import Deck from './components/Deck'
 import AddQuestion from './components/AddQuestion'
 import NewDeck from './components/NewDeck'
 import Decks from './components/Decks'
+import ShowCards from './components/ShowCards'
 
 
 
@@ -62,6 +63,12 @@ const Navigator = StackNavigator({
         screen: AddQuestion,
         navigationOptions: {
             title: 'Add question'
+        }
+    },
+    ShowCards: {
+        screen: ShowCards,
+        navigationOptions: {
+            title: 'Cards'
         }
     }
 }, {

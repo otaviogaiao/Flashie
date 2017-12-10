@@ -19,7 +19,8 @@ class Deck extends Component {
                     onPress={() => navigate('AddQuestion')}>
                     <Text >Add card</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.buttonAdd]}> 
+                <TouchableOpacity style={[styles.button, styles.buttonAdd]} 
+                 onPress={() => navigate('ShowCards')}> 
                     <Text>Edit deck</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.button, styles.buttonQuiz]}>
