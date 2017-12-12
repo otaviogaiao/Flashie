@@ -2,58 +2,32 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, StyleSheet, 
         TouchableOpacity } from 'react-native'
 
-const dummyDecks = [{
-    title: 'Deck 1',
-    cards: 3,
-    key: 'Deck 1'
-}, {
-    title: 'Deck 2',
-    cards: 4,
-    key: 'Deck 2'
-},{
-    title: 'Deck 3',
-    cards: 10,
-    key: 'Deck 3'
-},{
-    title: 'Deck 4',
-    cards: 7,
-    key: 'Deck 4'
-}, {
-    title: 'Deck 5',
-    cards: 8,
-    key: 'Deck 5'
-}, {
-    title: 'Deck 6',
-    cards: 4,
-    key: 'Deck 6'
-}, {
-    title: 'Deck 7',
-    cards: 15,
-    key: 'Deck 7'
-},{
-    title: 'Deck 8',
-    cards: 0,
-    key: 'Deck 8'
-},{
-    title: 'Deck 9',
-    cards: 1,
-    key: 'Deck 9'
-}]
+import { connect } from 'react-redux'
+
+import { formatNumberOfCards } from '../utils/helpers'
+import { getDecks } from '../utils/api'
+import { fetchDecks } from '../actions'
+
 
 class Decks extends Component {
 
+    componentDidMount(){
+        console.log('mounting decks...')
+        this.props.getAllDecks()
+    }
+
     render(){
         const { navigate } = this.props.navigation
-
+        let { decks } = this.props
         return (
           <View style={styles.list}>
-            <FlatList data={dummyDecks}
+            <FlatList data={decks}
               renderItem={({ item }) => (
-                  <TouchableOpacity onPress={() => navigate('Deck')}>
+                  <TouchableOpacity onPress={() => navigate('Deck', {deckId: item.deckId})}>
                       <View style={[styles.items]}>
                         <Text style={styles.title}>{item.title}</Text>
                         <Text style={styles.subTitle}>
-                            {item.cards + (item.cards == 1 ? ' card' : ' cards')}
+                            {formatNumberOfCards(item)}
                         </Text>
                     </View>
                   </TouchableOpacity>
@@ -62,7 +36,22 @@ class Decks extends Component {
     }
 }
 
-export default Decks
+function mapDispatchToProps(dispatch){
+    return {
+        getAllDecks: () => dispatch(fetchDecks())
+    }
+}
+
+function mapStateToProps({decks}){
+    return {
+        decks: decks ? 
+                Object.keys(decks).map((key) => Object.assign(decks[key], {key: key}))
+                : []
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Decks)
 
 const styles = StyleSheet.create({
     items: {

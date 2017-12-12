@@ -1,22 +1,26 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+
+import { formatNumberOfCards } from '../utils/helpers'
 
 
 class Deck extends Component {
-    
+
     render(){
         const { navigate } = this.props.navigation
+        const { deck } = this.props
 
         return (
             <View style={styles.container}>
                 <View style={styles.titlesContainer}>
-                    <Text style={styles.title}>My Deck 2</Text>
-                    <Text style={styles.subTitle}>3 cards</Text>
+                    <Text style={styles.title}>{deck.title}</Text>
+                    <Text style={styles.subTitle}>{formatNumberOfCards(deck)}</Text>
                 </View>
                
 
                 <TouchableOpacity style={[styles.button, styles.buttonAdd]}
-                    onPress={() => navigate('AddQuestion')}>
+                    onPress={() => navigate('AddCard', {deckId: deck.deckId})}>
                     <Text >Add card</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.button, styles.buttonAdd]} 
@@ -32,7 +36,12 @@ class Deck extends Component {
     }
 }
 
-export default Deck
+function mapStateToProps({decks}, {navigation}){
+    console.log('props de deck', decks)
+    return {deck: decks[navigation.state.params.deckId]}
+}
+
+export default connect(mapStateToProps)(Deck)
 
 const styles = StyleSheet.create({
     container: {

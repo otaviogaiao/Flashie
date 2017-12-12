@@ -1,15 +1,26 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { connect } from 'react-redux'
+
+import { doSaveDeck } from '../actions'
 
 class NewDeck extends Component {
 
     state={
-        name: null
+        title: null
     }
 
     submit = () => {
-        console.log(this.state.name)
+        const { add, goBack } = this.props
+        let deck = {...this.state}
+        !deck['deckId'] && (deck['deckId'] = Date.now())
+        !deck['cards'] && (deck['cards'] = [])
+        //TODO: FAZER COM QUE UM ACONTECA DEPOIS DO OUTRO, DESCOBRIR COMO COLOCAR THEN
+
+        add(deck)
+        goBack()
+        this.setState({title: null})
     }
 
     render(){
@@ -20,9 +31,9 @@ class NewDeck extends Component {
                     <TextInput editable={true} style={styles.input}
                     placeholder='Type title here'
                     maxLength={25}
-                    value={this.state.name}
+                    value={this.state.title}
                     onChangeText={(text) => {
-                        this.setState({name: text})
+                        this.setState({title: text})
                     }}
                     />
                 <TouchableOpacity style={styles.button} onPress={this.submit}>
@@ -33,7 +44,18 @@ class NewDeck extends Component {
     }
 }
 
-export default NewDeck
+function mapDispatchToProps(dispatch, { navigation }){
+    return {
+        add: (deck) => {
+            dispatch(doSaveDeck(deck))
+        },
+        goBack: () => {
+            navigation.goBack()
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(NewDeck)
 
 const styles = StyleSheet.create({
     container: {

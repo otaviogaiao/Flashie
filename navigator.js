@@ -5,7 +5,7 @@ import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons'
 
 
 import Deck from './components/Deck'
-import AddQuestion from './components/AddQuestion'
+import AddCard from './components/AddCard'
 import NewDeck from './components/NewDeck'
 import Decks from './components/Decks'
 import ShowCards from './components/ShowCards'
@@ -59,8 +59,8 @@ const Navigator = StackNavigator({
             title: 'Deck'
         }
     },
-    AddQuestion: {
-        screen: AddQuestion,
+    AddCard: {
+        screen: AddCard,
         navigationOptions: {
             title: 'Add question'
         }

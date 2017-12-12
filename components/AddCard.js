@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, 
     TextInput } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { connect } from 'react-redux'
 
-class AddQuestion extends Component {
+import { addCard } from '../actions'
+
+class AddCard extends Component {
 
     state = {
         question: null,
@@ -11,7 +14,14 @@ class AddQuestion extends Component {
     }
 
     submit = () => {
+        let card = {...this.state}
+        card.deckId = this.props.deckId
+        !card.cardId && (card.cardId = Date.now())
+        console.log(card)
+        this.props.add(card)
+        this.props.goBack()
 
+        this.setState({question: null, answer: null, deckId: null})
     }
 
     render(){
@@ -55,7 +65,25 @@ class AddQuestion extends Component {
 
 }
 
-export default AddQuestion
+export function mapDispatchToProps(dispatch, {navigation}){
+    return {
+        add: (card) => {
+            dispatch(addCard(card))
+        },
+        goBack: (deckId = null) => {
+            navigation.goBack()
+        }
+    }
+}
+
+export function mapStateToProps(state, {navigation}) {
+    console.log('state em addCard', state)
+    return {
+        deckId: navigation.state.params.deckId
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddCard)
 
 
 const styles = StyleSheet.create({
