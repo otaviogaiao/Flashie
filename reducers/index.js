@@ -4,11 +4,11 @@ import { ADD_DECK, REMOVE_DECK, GET_DECKS, ADD_CARD, REMOVE_CARD,
 import { combineReducers } from 'redux'
 
 
-const initialState = {
-    decks: {id: {}},
-    cards :{id: {}},
-    loading: false
-}
+// const initialState = {
+//     decks: {id: {id, title, cardsId: []}},
+//     cards :{cardId: {question, answer, cardId, deckId}},
+//     loading: false
+// }
 
 const initialStateConfig = {
     loading: false

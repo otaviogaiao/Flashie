@@ -90,6 +90,7 @@ export function addCard(card){
     return function (dispatch){
         dispatch(loading(true))
 
+        //COMENTADO PARA TENTAR FAZER FUNCIONAR NO REDUX PRIMEIRO
         // return addCardApi(card).then(() => {
         // }, erro => console.log(erro))
         //     .then(() => {
