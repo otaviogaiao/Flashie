@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { connect } from 'react-redux'
 
-import { doSaveDeck } from '../actions'
+import { addDeckAction } from '../actions'
 
 class NewDeck extends Component {
 
@@ -15,7 +15,7 @@ class NewDeck extends Component {
         const { add, goBack } = this.props
         let deck = {...this.state}
         !deck['deckId'] && (deck['deckId'] = Date.now())
-        !deck['cards'] && (deck['cards'] = [])
+        !deck['cardsId'] && (deck['cardsId'] = [])
         //TODO: FAZER COM QUE UM ACONTECA DEPOIS DO OUTRO, DESCOBRIR COMO COLOCAR THEN
 
         add(deck)
@@ -47,7 +47,7 @@ class NewDeck extends Component {
 function mapDispatchToProps(dispatch, { navigation }){
     return {
         add: (deck) => {
-            dispatch(doSaveDeck(deck))
+            dispatch(addDeckAction(deck))
         },
         goBack: () => {
             navigation.goBack()

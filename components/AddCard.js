@@ -17,7 +17,7 @@ class AddCard extends Component {
         let card = {...this.state}
         card.deckId = this.props.deckId
         !card.cardId && (card.cardId = Date.now())
-        console.log(card)
+        console.log('card', card)
         this.props.add(card)
         this.props.goBack()
 
@@ -77,7 +77,6 @@ export function mapDispatchToProps(dispatch, {navigation}){
 }
 
 export function mapStateToProps(state, {navigation}) {
-    console.log('state em addCard', state)
     return {
         deckId: navigation.state.params.deckId
     }

@@ -1,51 +1,74 @@
-import { SAVE_DECK, REMOVE_DECK, ADD_CARD, REMOVE_CARD,
-    REQUEST_DECKS, RECEIVE_DECKS, START_SAVE_DECK, FINISH_SAVE_DECK,
-    LOADING} from '../actions'
+import { ADD_DECK, REMOVE_DECK, GET_DECKS, ADD_CARD, REMOVE_CARD,
+    LOADING, ADD_CARD_TO_DECK } from '../actions'
+
+import { combineReducers } from 'redux'
 
 
 const initialState = {
-    decks: {},
+    decks: {id: {}},
+    cards :{id: {}},
     loading: false
 }
 
+const initialStateConfig = {
+    loading: false
+}
 
-function reducer(state = initialState, action){
-    let decks
-    let card
+function cardReducer(state = {}, action){
     switch(action.type){
-        case START_SAVE_DECK:
-            return Object.assign({}, state, {loading: true})
-        case FINISH_SAVE_DECK:
-            decks = state.decks
-            decks[action.deck.deckId] = action.deck
-            return Object.assign({}, state, decks)
-        case REMOVE_DECK:
-            break;
         case ADD_CARD:
-            console.log('reducer',state)
-            decks =  state.decks
-            card = action.card
-            let index = decks[card.deckId].cards.indexOf((c) => {
-                return c.cardId == card.cardId
-            })
-            if(index === -1){
-                decks[card.deckId].cards = decks[card.deckId].cards.push(card)
-            }else{
-                decks[card.deckId][index] = card
+            console.log('estado dentro de card reducer', state)
+            return {
+                ...state,
+                [action.card.cardId]: action.card
             }
-            return Object.assign({}, state, decks)
         case REMOVE_CARD:
-            break;
-        case REQUEST_DECKS:
-            return Object.assign({}, state, {loading: true})
-        case RECEIVE_DECKS:
-            // console.log('reducer receive decks', Object.assign({}, state, {decks: action.decks}, {loading: false}))
-            return Object.assign({}, state, {decks: action.decks}, {loading: false})
-        case LOADING: //muda loading de true para false e vice versa
-            return Object.assign({}, state, {loading: action.loading})
+            return state
         default:
             return state
     }
 }
 
-export default reducer
+function deckReducer(state = {}, action){
+    switch(action.type){
+        case ADD_DECK:
+            return {
+                ...state,
+                [action.deck.deckId]: action.deck
+            }
+        case GET_DECKS:
+            return action.decks
+        case REMOVE_DECK:
+            return state
+        case ADD_CARD_TO_DECK:
+            let cardsId = state[action.card.deckId].cardsId
+            return {
+                ...state,
+                [action.card.deckId]: {
+                    ...state[action.card.decksId],
+                    cardsId: cardsId.indexOf(action.card.cardId) !== -1 ? cardsId.concat(action.card.cardId)
+                             : cardsId
+                }
+            }
+        default:
+            return state
+    }
+}
+
+function configReducer(state = initialStateConfig, action){
+    switch(action.type){
+        case LOADING:
+            return {
+                ...state,
+                loading: action.loading
+            }
+        default:
+            return state
+    }
+}
+
+export default combineReducers({
+    cards: cardReducer,
+    decks: deckReducer,
+    config: configReducer
+})

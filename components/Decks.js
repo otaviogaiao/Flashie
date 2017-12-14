@@ -5,20 +5,23 @@ import { View, Text, FlatList, StyleSheet,
 import { connect } from 'react-redux'
 
 import { formatNumberOfCards } from '../utils/helpers'
-import { getDecks } from '../utils/api'
-import { fetchDecks } from '../actions'
+import { getDecks, getCards } from '../utils/api'
+import { getDecksAction } from '../actions'
+
+// import { AsyncStorage } from 'react-native'
 
 
 class Decks extends Component {
 
     componentDidMount(){
         console.log('mounting decks...')
-        this.props.getAllDecks()
+        this.props.getDecks()
+        // AsyncStorage.removeItem('FLASHIE_KEY_DECK')
     }
 
     render(){
         const { navigate } = this.props.navigation
-        let { decks } = this.props
+        const decks = this.props.decks ? Object.keys(this.props.decks).map((key) => { return this.props.decks[key]}) : []
         return (
           <View style={styles.list}>
             <FlatList data={decks}
@@ -38,15 +41,14 @@ class Decks extends Component {
 
 function mapDispatchToProps(dispatch){
     return {
-        getAllDecks: () => dispatch(fetchDecks())
+        getDecks: () => dispatch(getDecksAction())
     }
 }
 
 function mapStateToProps({decks}){
+    console.log('decks', decks)
     return {
-        decks: decks ? 
-                Object.keys(decks).map((key) => Object.assign(decks[key], {key: key}))
-                : []
+        decks
     }
 }
 
