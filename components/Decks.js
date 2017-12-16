@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, FlatList, StyleSheet, 
         TouchableOpacity } from 'react-native'
+import { AppLoading } from 'expo'
 
 import { connect } from 'react-redux'
 
@@ -22,11 +23,18 @@ class Decks extends Component {
     }
 
     render(){
+
+        if(this.props.loading){
+            return <AppLoading />
+        }
+
         const { navigate } = this.props.navigation
         const decks = this.props.decks ? Object.keys(this.props.decks).map((key) => { return this.props.decks[key]}) : []
+
         return (
           <View style={styles.list}>
             <FlatList data={decks}
+              keyExtractor={(item, index) => item.deckid}
               renderItem={({ item }) => (
                   <TouchableOpacity onPress={() => navigate('Deck', {deckId: item.deckId})}>
                       <View style={[styles.items]}>
@@ -50,8 +58,10 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state){
     let { decks } = state.entity
+    let { loading } = state
     return {
-        decks
+        decks,
+        loading
     }
 }
 
