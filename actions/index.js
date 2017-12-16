@@ -13,13 +13,18 @@ export const GET_ALL_CARDS = 'GET_ALL_CARDS'
 export const LOADING = 'LOADING'
 
 
-import { getDecks, saveDeck, getDeck, addCard as addCardApi, getCards} from '../utils/api'
+import { getDecks, saveDeck, getDeck, addCard as addCardApi, getCards, deleteDeck} from '../utils/api'
 
 
 export function removeDeck(deck){
-    return {
-        type: REMOVE_DECK,
-        deck
+    return function (dispatch){
+        return deleteDeck(deck).then(() => {}, error => console.log(error))
+        .then(() => {
+            return dispatch({
+                type: REMOVE_DECK,
+                deck
+            })
+        })
     }
 }
 
@@ -99,11 +104,6 @@ export function addCard(card){
                 })
                 dispatch(loading(false))
             })
-        // dispatch(loading(false))
-        // return dispatch({
-        //     type: ADD_CARD,
-        //     card
-        // })
 
     }
 }

@@ -39,11 +39,22 @@ export function addCard(card){
         }
         return AsyncStorage.mergeItem(FLASHIE_KEY_DECK, JSON.stringify(decks)) //checar aqui
     }).then(() => {
-        return AsyncStorage.mergeItem(FLASHIE_KEY_CARD, {[cardId]: card})
+        return AsyncStorage.mergeItem(FLASHIE_KEY_CARD, JSON.stringify({[card.cardId]: card}))
     })
 }
 
 //deletes a deck and all its cards
-export function deleteDeck(id){
-
+export function deleteDeck(deck){
+    return getDecks().then((decks) => {
+        delete decks[deck.deckId]
+        return AsyncStorage.setItem(FLASHIE_KEY_DECK, JSON.stringify(decks))
+             .then(() => {
+                 return getCards().then( cards => {
+                     for(let id of deck.cardsId){
+                         delete cards[id]
+                     }
+                     return AsyncStorage.setItem(FLASHIE_KEY_CARD, JSON.stringify(cards))
+                 })
+             })
+    })
 }

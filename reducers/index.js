@@ -2,6 +2,8 @@ import { ADD_DECK, REMOVE_DECK, GET_DECKS, ADD_CARD, REMOVE_CARD,
     LOADING, GET_ALL_CARDS } from '../actions'
 
 import { combineReducers } from 'redux'
+import { removeManyKeys } from '../utils/helpers'
+import _omit from 'lodash.omit'
 
 
 // const initialState = {
@@ -22,8 +24,6 @@ const initialStateConfig = {
 function entityReducer (state = initialState, action){
     console.log('state reducer', state)
     let { decks, cards } = state
-    console.log('decks reducer', decks)
-    console.log('cards reducer', cards)
     switch(action.type){
         case ADD_CARD:
             return {
@@ -36,7 +36,7 @@ function entityReducer (state = initialState, action){
             }
         case REMOVE_CARD:
             return state
-            case ADD_DECK:
+        case ADD_DECK:
             return {
                 ...state,
                 decks: {
@@ -58,7 +58,11 @@ function entityReducer (state = initialState, action){
                 cards: action.cards
             }
         case REMOVE_DECK:
-            return state
+            return {
+                ...state,
+                decks: _omit(decks, action.deck.deckId),
+                cards: _omit(cards, action.deck.cardsId )
+            }
         default:
             return state
     }

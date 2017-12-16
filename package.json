@@ -20,9 +20,11 @@
   },
   "dependencies": {
     "expo": "^23.0.4",
+    "lodash.omit": "^4.5.0",
     "react": "16.0.0",
     "react-native": "0.50.3",
     "react-native-keyboard-aware-scroll-view": "^0.4.1",
+    "react-native-swipeout": "^2.3.3",
     "react-navigation": "^1.0.0-beta.21",
     "redux-thunk": "^2.2.0"
   }
