@@ -1,5 +1,5 @@
 import { ADD_DECK, REMOVE_DECK, GET_DECKS, ADD_CARD, REMOVE_CARD,
-    LOADING, ADD_CARD_TO_DECK } from '../actions'
+    LOADING, GET_ALL_CARDS } from '../actions'
 
 import { combineReducers } from 'redux'
 
@@ -10,46 +10,55 @@ import { combineReducers } from 'redux'
 //     loading: false
 // }
 
+const initialState = {
+    decks: {},
+    cards: {}
+}
+
 const initialStateConfig = {
     loading: false
 }
 
-function cardReducer(state = {}, action){
+function entityReducer (state = initialState, action){
+    console.log('state reducer', state)
+    let { decks, cards } = state
+    console.log('decks reducer', decks)
+    console.log('cards reducer', cards)
     switch(action.type){
         case ADD_CARD:
-            console.log('estado dentro de card reducer', state)
             return {
                 ...state,
-                [action.card.cardId]: action.card
+                decks: Object.assign({}, decks, {[action.card.deckId]: {
+                    ...decks[action.card.deckId],
+                    cardsId: decks[action.card.deckId].cardsId.concat(action.card.cardId)
+                }}),
+                cards: Object.assign({}, cards, {[action.card.cardId]: action.card})
             }
         case REMOVE_CARD:
             return state
-        default:
-            return state
-    }
-}
-
-function deckReducer(state = {}, action){
-    switch(action.type){
-        case ADD_DECK:
+            case ADD_DECK:
             return {
                 ...state,
-                [action.deck.deckId]: action.deck
+                decks: {
+                    ...decks,
+                    [action.deck.deckId]: action.deck
+                },
+                cards    
             }
         case GET_DECKS:
-            return action.decks
-        case REMOVE_DECK:
-            return state
-        case ADD_CARD_TO_DECK:
-            let cardsId = state[action.card.deckId].cardsId
             return {
                 ...state,
-                [action.card.deckId]: {
-                    ...state[action.card.decksId],
-                    cardsId: cardsId.indexOf(action.card.cardId) !== -1 ? cardsId.concat(action.card.cardId)
-                             : cardsId
-                }
+                decks: action.decks,
+                cards
             }
+        case GET_ALL_CARDS:
+            return {
+                ...state,
+                decks,
+                cards: action.cards
+            }
+        case REMOVE_DECK:
+            return state
         default:
             return state
     }
@@ -68,7 +77,6 @@ function configReducer(state = initialStateConfig, action){
 }
 
 export default combineReducers({
-    cards: cardReducer,
-    decks: deckReducer,
+    entity: entityReducer,
     config: configReducer
 })

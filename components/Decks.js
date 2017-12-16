@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 import { formatNumberOfCards } from '../utils/helpers'
 import { getDecks, getCards } from '../utils/api'
-import { getDecksAction } from '../actions'
+import { getDecksAction, getAllCards } from '../actions'
 
 // import { AsyncStorage } from 'react-native'
 
@@ -16,7 +16,9 @@ class Decks extends Component {
     componentDidMount(){
         console.log('mounting decks...')
         this.props.getDecks()
+        this.props.getCards()
         // AsyncStorage.removeItem('FLASHIE_KEY_DECK')
+        // AsyncStorage.removeItem('FLASHIE_KEY_CARD')
     }
 
     render(){
@@ -41,12 +43,13 @@ class Decks extends Component {
 
 function mapDispatchToProps(dispatch){
     return {
-        getDecks: () => dispatch(getDecksAction())
+        getDecks: () => dispatch(getDecksAction()),
+        getCards: () => dispatch(getAllCards())
     }
 }
 
-function mapStateToProps({decks}){
-    console.log('decks', decks)
+function mapStateToProps(state){
+    let { decks } = state.entity
     return {
         decks
     }

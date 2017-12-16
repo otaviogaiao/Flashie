@@ -90,25 +90,20 @@ export function addCard(card){
     return function (dispatch){
         dispatch(loading(true))
 
-        //COMENTADO PARA TENTAR FAZER FUNCIONAR NO REDUX PRIMEIRO
-        // return addCardApi(card).then(() => {
-        // }, erro => console.log(erro))
-        //     .then(() => {
-        //         dispatch({
-        //             type: ADD_CARD,
-        //             card
-        //         })
-        //         dispatch(loading(false))
-        //     })
-        dispatch(loading(false))
-        dispatch({
-            type: ADD_CARD_TO_DECK,
-            card
-        })
-        return dispatch({
-            type: ADD_CARD,
-            card
-        })
+        return addCardApi(card).then(() => {
+        }, erro => console.log(erro))
+            .then(() => {
+                dispatch({
+                    type: ADD_CARD,
+                    card
+                })
+                dispatch(loading(false))
+            })
+        // dispatch(loading(false))
+        // return dispatch({
+        //     type: ADD_CARD,
+        //     card
+        // })
 
     }
 }
@@ -128,5 +123,6 @@ export function getAllCards(){
             })
     }
 }
+
 
 /////////////

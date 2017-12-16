@@ -36,7 +36,8 @@ class Deck extends Component {
     }
 }
 
-function mapStateToProps({decks}, {navigation}){
+function mapStateToProps(state, {navigation}){
+    let { decks } = state.entity
     return {deck: decks[navigation.state.params.deckId]}
 }
 
