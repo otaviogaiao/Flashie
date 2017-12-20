@@ -2,9 +2,7 @@ import { ADD_DECK, REMOVE_DECK, GET_DECKS, ADD_CARD, REMOVE_CARD,
     LOADING, GET_ALL_CARDS } from '../actions'
 
 import { combineReducers } from 'redux'
-import { removeManyKeys } from '../utils/helpers'
 import _omit from 'lodash.omit'
-
 
 // const initialState = {
 //     decks: {id: {id, title, cardsId: []}},
@@ -22,7 +20,7 @@ const initialStateConfig = {
 }
 
 function entityReducer (state = initialState, action){
-    console.log('state reducer', state)
+    console.log('state reducer', state, action)
     let { decks, cards } = state
     switch(action.type){
         case ADD_CARD:
@@ -30,12 +28,23 @@ function entityReducer (state = initialState, action){
                 ...state,
                 decks: Object.assign({}, decks, {[action.card.deckId]: {
                     ...decks[action.card.deckId],
-                    cardsId: decks[action.card.deckId].cardsId.concat(action.card.cardId)
+                    cardsId: decks[action.card.deckId].cardsId.includes(action.card.cardId) ? 
+                      decks[action.card.deckId].cardsId
+                      : decks[action.card.deckId].cardsId.concat(action.card.cardId)
                 }}),
                 cards: Object.assign({}, cards, {[action.card.cardId]: action.card})
             }
         case REMOVE_CARD:
-            return state
+            let cardsDecks = decks[action.card.deckId].cardsId        
+            cardsDecks = cardsDecks.filter((c) => c !== action.card.cardId)
+            return {
+                ...state,
+                decks: Object.assign({}, decks, { [action.card.deckId]: {
+                    ...decks[action.card.deckId],
+                    cardsId: cardsDecks
+                }}),
+                cards: _omit(cards, action.card.cardId)
+            }
         case ADD_DECK:
             return {
                 ...state,

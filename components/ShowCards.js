@@ -2,38 +2,69 @@ import React, { Component } from 'react'
 import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Entypo, FontAwesome } from '@expo/vector-icons'
 
+import { connect } from 'react-redux'
+import Swipeout from 'react-native-swipeout'
 
-const cards = [
-    {key: 1, question: 'This is question 1?', answer: 'yes'},
-    {key: 2, question: 'This is question 2?his is question 2?his is question 2?is question 2?his is question 2?is question 2?his is question 2?', answer: 'yes'},
-    {key: 3, question: 'This is question 3?', answer: 'yes'},
-    {key: 4, question: 'This is question 4?', answer: 'yes'},
-    {key: 5, question: 'This is question 5?', answer: 'yes'},
-    {key: 6, question: 'This is question 6?', answer: 'yes'},
-    {key: 7, question: 'This is question 7?', answer: 'yes'},
-    {key: 8, question: 'This is question 8?', answer: 'yes'},
-]
+import { removeCard } from '../actions'
+
+
 
 class ShowCards extends Component {
 
+    state = {
+        activeRow: null
+    }
+
+    onSwipeOpen(item, rowId, direction){
+        this.setState({ activeRow: item.cardId })
+    }
+     
+    onSwipeClose(item, rowId, direction){
+        if (item.cardId === this.state.activeRow && typeof direction !== 'undefined') {
+            this.setState({ activeRow: null });
+        }
+    }
+
+    onDeleteItem = (item) => {
+        this.props.delete(item)
+    }
+
+
+    renderListItem = (item, index) => {
+        const { navigate } = this.props.navigation
+        const swipeSettings = {
+            autoClose: true,
+            close: item.cardId !== this.state.activeRow,
+            onClose: (secId, rowId, direction) => this.onSwipeClose(item, rowId, direction),
+            onOpen: (secId, rowId, direction) => this.onSwipeOpen(item, rowId, direction),
+            right: [
+                { onPress: () => navigate('AddCard', {deckId: item.deckId, cardId: item.cardId}), text: 'Edit', type: 'primary'},
+                { onPress: () => this.onDeleteItem(item), text: 'Delete', type: 'delete' }
+            ],
+            rowId: index,
+            sectionId: 1
+        }
+
+        return (
+            <Swipeout {...swipeSettings}>
+                <View style={[styles.items]}>
+                    <Text style={styles.title} numberOfLines={3}>{item.question}</Text>
+                </View>
+            </Swipeout>
+        )
+    }
+
     render(){
+
+        const { cards } = this.props
         return (
             <View style={styles.container}>
                 <FlatList data={cards}
-                renderItem={({item}) => {
-                    return (<View style={styles.items}>
-                        <Text numberOfLines={3} style={styles.question}>{item.question}</Text>
-                        <View style={styles.icons}>
-                            <TouchableOpacity style={{marginRight: 15}}>
-                                <Entypo name='edit' size={30} />
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <FontAwesome name='remove' size={30} />
-                            </TouchableOpacity>
-                         </View>
-                      
-                    </View>)
-                }}>
+                keyExtractor={(item, index) => item.cardId}
+                extraData= {this.state.activeRow}
+                renderItem={({item, index}) => {
+                            return this.renderListItem(item, index)
+                        }}>
                     
                 </FlatList>
             </View>
@@ -41,7 +72,31 @@ class ShowCards extends Component {
     }
 }
 
-export default ShowCards
+
+function mapDispatchToProps(dispatch, props){
+    return {
+        delete: (c) => {return dispatch(removeCard(c))}
+    }
+}
+
+function mapStateToProps(state, {navigation}){
+    let deck = state.entity.decks[navigation.state.params.deckId]
+    let cardsIds = deck.cardsId
+    let cards = []
+    if(state.entity.cards) {
+        cards = Object.keys(state.entity.cards).map((key) => {
+            return state.entity.cards[key]
+            }).filter((card) => {
+                return cardsIds.includes(card.cardId)
+            })
+    }
+    return {
+        cards,
+        deck
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShowCards)
 
 const styles = StyleSheet.create({
     container: {

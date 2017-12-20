@@ -13,11 +13,33 @@ class AddCard extends Component {
         answer: null
     }
 
+    componentDidMount(){
+        let {card} = this.props
+        this.updateState(card)
+    }
+
+    componentWillReceiveProps(nextProps){
+        nextProps.card != this.props.card && this.updateState(nextProps.card)
+    }
+
+    updateState = (card) => {
+        if(card){
+            this.setState(() => {
+                return {
+                    question: card.question,
+                    cardId: card.cardId,
+                    deckId: card.deckId,
+                    answer: card.answer
+                }
+            })
+        }
+    }
+
     submit = () => {
         let card = {...this.state}
-        card.deckId = this.props.deckId
+        !card.deckId && (card.deckId = this.props.deckId)
         !card.cardId && (card.cardId = Date.now())
-        console.log('card', card)
+        console.log('adding card', card)
         this.props.add(card)
         this.props.goBack()
 
@@ -77,8 +99,10 @@ export function mapDispatchToProps(dispatch, {navigation}){
 }
 
 export function mapStateToProps(state, {navigation}) {
+    let card = state.entity.cards ? state.entity.cards[navigation.state.params.cardId] : null
     return {
-        deckId: navigation.state.params.deckId
+        deckId: navigation.state.params.deckId,
+        card
     }
 }
 
