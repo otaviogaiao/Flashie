@@ -9,6 +9,7 @@ import AddCard from './components/AddCard'
 import NewDeck from './components/NewDeck'
 import Decks from './components/Decks'
 import ShowCards from './components/ShowCards'
+import Quiz from './components/Quiz'
 
 
 
@@ -70,6 +71,12 @@ const Navigator = StackNavigator({
         navigationOptions: {
             title: 'Cards'
         }
+    },
+    Quiz: {
+        screen: Quiz,
+        navigationOptions: ({navigation, screenProps}) => ({
+            title: 'Quiz for '+navigation.state.params.deck.title
+        })
     }
 }, {
     headerMode: 'screen'

@@ -14,7 +14,11 @@ class NewDeck extends Component {
     submit = () => {
         const { add, goBack } = this.props
         let deck = {...this.state}
-        !deck['deckId'] && (deck['deckId'] = Date.now())
+        if(!deck['deckId']){
+            deck['deckId'] = Date.now()
+            deck['logs'] = []
+        }
+       
         !deck['cardsId'] && (deck['cardsId'] = [])
         //TODO: FAZER COM QUE UM ACONTECA DEPOIS DO OUTRO, DESCOBRIR COMO COLOCAR THEN
 

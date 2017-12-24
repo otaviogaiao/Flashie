@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 
 import { formatNumberOfCards } from '../utils/helpers'
+import Quiz from './Quiz'
 
 
 class Deck extends Component {
@@ -27,7 +28,8 @@ class Deck extends Component {
                  onPress={() => navigate('ShowCards', {deckId: deck.deckId})}> 
                     <Text>Edit deck</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.buttonQuiz]}>
+                <TouchableOpacity style={[styles.button, styles.buttonQuiz]}
+                    onPress={() => navigate('Quiz', { deck: deck })}>
                     <Text style={{color: 'white'}}>Start quiz</Text>
                 </TouchableOpacity>
 

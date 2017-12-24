@@ -5,6 +5,7 @@ export const REMOVE_DECK = 'REMOVE_DECK'
 export const ADD_CARD = 'ADD_CARD'
 export const REMOVE_CARD = 'REMOVE_CARD'
 export const ADD_CARD_TO_DECK = 'ADD_CARD_TO_DECK'
+export const UPDATE_LOGS = 'UPDATE_LOGS'
 
 export const GET_DECKS = 'FETCH_DECKS'
 
@@ -13,7 +14,8 @@ export const GET_ALL_CARDS = 'GET_ALL_CARDS'
 export const LOADING = 'LOADING'
 
 
-import { getDecks, saveDeck, getDeck, addCard as addCardApi, getCards, deleteDeck, removeCard as removeCardApi} 
+import { getDecks, saveDeck, getDeck, addCard as addCardApi, getCards, deleteDeck, removeCard as removeCardApi,
+        updateLogs as updateLogsApi} 
             from '../utils/api'
 
 
@@ -129,6 +131,21 @@ export function getAllCards(){
 
                 dispatch(loading(true))
             })
+    }
+}
+
+export function updateLogs(deck, cards){
+    return function(dispatch){
+        // dispatch(loading(true))
+        updateLogsApi(deck, cards).then(() => {}, erro => console.log(erro))
+            .then(() => {
+                return dispatch({
+                    type: UPDATE_LOGS,
+                    deck,
+                    cards
+                })
+            })
+       
     }
 }
 

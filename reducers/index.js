@@ -1,5 +1,5 @@
 import { ADD_DECK, REMOVE_DECK, GET_DECKS, ADD_CARD, REMOVE_CARD,
-    LOADING, GET_ALL_CARDS } from '../actions'
+    LOADING, GET_ALL_CARDS, UPDATE_LOGS } from '../actions'
 
 import { combineReducers } from 'redux'
 import _omit from 'lodash.omit'
@@ -71,6 +71,16 @@ function entityReducer (state = initialState, action){
                 ...state,
                 decks: _omit(decks, action.deck.deckId),
                 cards: _omit(cards, action.deck.cardsId )
+            }
+        case UPDATE_LOGS:
+            let updateCards = {}
+            for(let c of Object.values(action.cards)){
+                updateCards[c.cardId] = c
+            }
+            return {
+                ...state,
+                decks: Object.assign({}, decks, {[action.deck.deckId]: action.deck}),
+                cards: Object.assign({}, cards, updateCards)
             }
         default:
             return state

@@ -69,3 +69,12 @@ export function removeCard(card){
              })
     })
 }
+
+export function updateLogs(deck, cards){
+    return saveDeck(deck).then(() => {
+        return getCards().then((c) => {
+            let newCards = cards.map((card) => ({[card.cardId]: card}))
+            return AsyncStorage.mergeItem(FLASHIE_KEY_CARD, JSON.stringify(Object.assign({}, c, ...newCards)))
+        })
+    })
+}
