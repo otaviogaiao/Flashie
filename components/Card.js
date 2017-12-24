@@ -39,9 +39,11 @@ class Card extends Component {
                 </TouchableOpacity>
              </View>}
 
+            { card.hasOwnProperty('correct') &&
              <View style={[styles.textView, styles.bottomText]}>
                  <Text style={{color: card.correct ? 'green' : 'red', fontSize: 25}}>You got it {card.correct ? 'right' : 'wrong'} last time!</Text>
              </View>
+            }
            
            </View>
         )

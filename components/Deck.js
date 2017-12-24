@@ -28,10 +28,11 @@ class Deck extends Component {
                  onPress={() => navigate('ShowCards', {deckId: deck.deckId})}> 
                     <Text>Edit deck</Text>
                 </TouchableOpacity>
+                {deck.cardsId.length !== 0 &&
                 <TouchableOpacity style={[styles.button, styles.buttonQuiz]}
-                    onPress={() => navigate('Quiz', { deck: deck })}>
+                    onPress={() => navigate('Quiz', { deck: deck })} >
                     <Text style={{color: 'white'}}>Start quiz</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>}
 
             </View>
         )
@@ -77,5 +78,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         borderColor: 'black',
         borderWidth: 1
+    },
+    disabled: {
+        opacity: 0.5
     }
 })

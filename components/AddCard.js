@@ -77,10 +77,11 @@ class AddCard extends Component {
                     }}
                     />
             </View>
-
+         {this.state.answer && this.state.question &&
             <TouchableOpacity style={styles.button} onPress={this.submit}>
                 <Text style={{color: 'white'}}>Submit</Text>
             </TouchableOpacity>
+         }
         
       </KeyboardAwareScrollView>)
     }

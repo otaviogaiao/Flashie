@@ -28,6 +28,7 @@ class NewDeck extends Component {
     }
 
     render(){
+        const disabled = this.state.title === null || this.state.title.length === 0
         return (
             <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
                 contentContainerStyle={styles.container}>
@@ -40,9 +41,10 @@ class NewDeck extends Component {
                         this.setState({title: text})
                     }}
                     />
-                <TouchableOpacity style={styles.button} onPress={this.submit}>
+                {!disabled &&
+                <TouchableOpacity style={[styles.button]} onPress={this.submit}>
                     <Text style={{color: 'white'}}>Submit</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>}
               </KeyboardAwareScrollView>
             )
     }
@@ -84,5 +86,8 @@ const styles = StyleSheet.create({
         margin: 15,
         padding: 15,
         borderRadius: 10
+    },
+    disabled: {
+        opacity: 0.7
     }
 })

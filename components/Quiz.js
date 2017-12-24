@@ -17,22 +17,18 @@ class Quiz extends Component {
     state = {
         cards: [],
         deck: null,
-        index: 0
+        index: 0,
+        total: 0
     }
 
     componentDidMount(){
-        this.setState(() => ({cards: suffleArray(this.props.cards), deck: this.props.deck, index: 0}))
+        this.setState(() => ({cards: suffleArray(this.props.cards), deck: this.props.deck, index: 0, total: 0}))
     }
 
     updateProgressCallback(){
         if(this.state.index >= this.state.cards.length){
-            let { deck } = this.state
-            let total = this.state.cards.reduce((acc, card) => {
-                if(card.correct){
-                    return acc + 1
-                }
-                return acc
-            }, 0)
+            let { deck, total } = this.state
+
             total = total/this.state.cards.length * 100
             deck = {...deck , logs: deck.logs.concat([{day: Date.now(), correctPct: total}])}
             console.log('deck', deck)
@@ -43,20 +39,27 @@ class Quiz extends Component {
     next(correct){
         if(this.state.index < this.state.cards.length){
             this.setState((oldState) => { 
-                let { cards } = oldState
+                let { cards, total } = oldState
+                correct && (total = total + 1)
                 cards[oldState.index]['correct'] = correct
-                return {index: oldState.index + 1, cards}
+                return {index: oldState.index + 1, cards, total}
             }, this.updateProgressCallback)
         }
       
     }
 
     render(){
-        const { cards, index } = this.state
+        const { cards, index, total } = this.state
+        let result = total/cards.length * 100
         return (
         <View style={styles.container}>
-            {index >= cards.length ? <Text>You finished the quiz!</Text> :
-            <View>
+            {index >= cards.length 
+            ? <View>
+                <Text>You finished the quiz!</Text>
+
+                <Text>You got {result}% right!</Text>
+              </View>
+            :<View>
               <Text style={{fontSize: 25, alignSelf: 'flex-start'}}>{(index + 1) + '/' + cards.length}</Text>
 
               <Card card={cards[index]} next={this.next} />
