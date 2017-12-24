@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native'
 
 class Card extends Component {
 
@@ -7,44 +7,111 @@ class Card extends Component {
         answered: false
     }
 
+    componentWillMount(){
+       this.configureAnimation()
+    }
+
     componentWillReceiveProps(){
         this.setState({
             answered: false
         })
+       this.configureAnimation()
     }
 
+    configureAnimation(){
+        this.animatedValue = new Animated.Value(0);
+        this.value = 0;
+        this.animatedValue.addListener(({ value }) => {
+          this.value = value;
+        })
+        this.frontInterpolate = this.animatedValue.interpolate({
+          inputRange: [0, 180],
+          outputRange: ['0deg', '180deg'],
+        })
+        this.backInterpolate = this.animatedValue.interpolate({
+          inputRange: [0, 180],
+          outputRange: ['180deg', '360deg']
+        })
+    }
+
+    flipCard() {
+        if (this.value >= 90) {
+          Animated.spring(this.animatedValue,{
+            toValue: 0,
+            friction: 8,
+            tension: 10
+          }).start();
+        } else {
+          Animated.spring(this.animatedValue,{
+            toValue: 180,
+            friction: 8,
+            tension: 10
+          }).start();
+        }
+    
+      }
+
     render(){
+        const frontAnimatedStyle = {
+            transform: [
+              { rotateY: this.frontInterpolate}
+            ]
+          }
+        const backAnimatedStyle = {
+            transform: [
+              { rotateY: this.backInterpolate }
+            ]
+          }
+
         let answered = this.state.answered
         let  { card } = this.props
         return (
           <View style={{alignItems: 'stretch', justifyContent: 'center'}}>
-            <View style={{alignItems: 'center'}}>
-                <Text style={[styles.title, styles.textView]}>{answered ? card.answer : card.question}</Text>
-            </View>
-           
-            <TouchableOpacity onPress={() => {this.setState({answered: !answered})}} style={styles.textView}>
-                <Text style={styles.text}>{answered ? 'Question' : 'Answer'}</Text>
-            </TouchableOpacity>  
-
-            { answered &&  
-            <View style={{alignItems: 'stretch'}}>
-                <TouchableOpacity style={[styles.button, {backgroundColor: 'green'}]} 
-                onPress={() => this.props.next(true)}>
-                    <Text style={{color: 'white'}}>Correct</Text>
+            <Animated.View style={[frontAnimatedStyle, styles.flipCard]}>
+                <View style={{alignItems: 'center'}}>
+                    <Text style={[styles.title, styles.textView]}>{card.question}</Text>
+                </View>
+                           
+                <TouchableOpacity onPress={() => {this.setState({answered: !answered}), this.flipCard()}} style={styles.textView}>
+                    <Text style={styles.text}>Answer</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[styles.button, {backgroundColor: 'red'}]}  
-                onPress={() => this.props.next(false)}>
-                    <Text style={{color: 'white'}}>Incorrect</Text>
-                </TouchableOpacity>
-             </View>}
-
-            { card.hasOwnProperty('correct') &&
-             <View style={[styles.textView, styles.bottomText]}>
-                 <Text style={{color: card.correct ? 'green' : 'red', fontSize: 25}}>You got it {card.correct ? 'right' : 'wrong'} last time!</Text>
-             </View>
-            }
+                { card.hasOwnProperty('correct') &&
+                    <View style={[styles.textView, styles.bottomText]}>
+                        <Text style={{color: card.correct ? 'green' : 'red', fontSize: 25}}>You got it {card.correct ? 'right' : 'wrong'} last time!</Text>
+                    </View>
+                      }
+            </Animated.View>
            
+            <Animated.View style={[backAnimatedStyle, styles.flipCard]}>
+                <View style={{alignItems: 'center'}}>
+                    <Text style={[styles.title, styles.textView]}>{card.answer}</Text>
+                </View>
+                           
+                <TouchableOpacity onPress={() => {this.setState({answered: !answered}), this.flipCard()}} style={styles.textView}>
+                    <Text style={styles.text}>Question</Text>
+                </TouchableOpacity>
+
+                <View style={{alignItems: 'stretch'}}>
+                    <TouchableOpacity style={[styles.button, {backgroundColor: 'green'}]} 
+                    onPress={() => this.props.next(true)}>
+                        <Text style={{color: 'white'}}>Correct</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={[styles.button, {backgroundColor: 'red'}]}  
+                    onPress={() => this.props.next(false)}>
+                        <Text style={{color: 'white'}}>Incorrect</Text>
+                    </TouchableOpacity>
+                </View>
+
+                { card.hasOwnProperty('correct') &&
+                        <View style={[styles.textView, styles.bottomText]}>
+                            <Text style={{color: card.correct ? 'green' : 'red', fontSize: 25}}>You got it {card.correct ? 'right' : 'wrong'} last time!</Text>
+                        </View>
+                }
+
+            </Animated.View>
+
            </View>
         )
     }
@@ -76,5 +143,8 @@ const styles = StyleSheet.create({
     },
     bottomText: {
         alignItems: 'flex-end'
+    },
+    flipCard: {
+        backfaceVisibility: 'hidden'
     }
 })

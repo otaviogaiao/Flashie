@@ -24,10 +24,13 @@ class Deck extends Component {
                     onPress={() => navigate('AddCard', {deckId: deck.deckId})}>
                     <Text >Add card</Text>
                 </TouchableOpacity>
+                
+                {deck.cardsId.length !== 0 &&
                 <TouchableOpacity style={[styles.button, styles.buttonAdd]} 
                  onPress={() => navigate('ShowCards', {deckId: deck.deckId})}> 
                     <Text>Edit deck</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>}
+              
                 {deck.cardsId.length !== 0 &&
                 <TouchableOpacity style={[styles.button, styles.buttonQuiz]}
                     onPress={() => navigate('Quiz', { deck: deck })} >
