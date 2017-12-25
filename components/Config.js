@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet, Switch, AsyncStorage, AppState } from 'react-native'
 
 import { changeNotificationStatus, NOTIFICATION_KEY } from '../utils/helpers'
+import { textStyles, colors } from '../utils/styles'
 import { Permissions, Notifications } from 'expo'
 
-
+//TODO: colocar um header
 class Config extends Component {
 
     state = {
@@ -56,15 +57,19 @@ class Config extends Component {
     render(){
         return (
             <View style={styles.container}>
-                <View style={[styles.marginTop, styles.subContainer]}>
-                    <Text style={styles.text}>Allow Notifications</Text>
-                    <Switch value={this.state.allowed && this.state.notifications} onValueChange={this.handleSwitchValueChange}
-                     disabled={!this.state.allowed}/>
+                <View style={[styles.subContainer]}>
+                   <View style={styles.item}>
+                        <Text style={textStyles.title3}>Allow Notifications</Text>
+                        <Switch value={this.state.allowed && this.state.notifications} onValueChange={this.handleSwitchValueChange}
+                        disabled={!this.state.allowed}/>
+                    
+                    </View>
+                  
+                 {!this.state.allowed &&
+                    <View style={styles.warning}>
+                        <Text style={[textStyles.callout]}>You have to allow notifications for this app in settings</Text>
+                    </View>}
                 </View>
-                {!this.state.allowed &&
-                <View>
-                    <Text style={styles.warning}>You have to allow notifications for this app in settings</Text>
-                </View>}
                 
             </View>
         )
@@ -76,20 +81,25 @@ export default Config
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
-        backgroundColor: 'white'
+        justifyContent: 'flex-start'
     },
-    marginTop: {
-        marginTop: 45
+    item: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     subContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginRight: 20,
-        marginLeft: 20
-    },
-    text: {
-        fontSize: 20
+        alignItems: 'stretch',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        marginTop: 35,
+        paddingRight: 20,
+        paddingLeft: 20,
+        paddingTop: 30,
+        backgroundColor: colors.white,
+        borderTopWidth: 0.5,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#D7DEE0',
+        borderTopColor: '#D7DEE0'
     },
     warning: {
         margin: 15

@@ -3,7 +3,10 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { connect } from 'react-redux'
 
+import Button from './Button'
+
 import { addDeckAction } from '../actions'
+import { textStyles } from '../utils/styles'
 
 class NewDeck extends Component {
 
@@ -32,8 +35,8 @@ class NewDeck extends Component {
         return (
             <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
                 contentContainerStyle={styles.container}>
-                <Text style={styles.title}>Whats the title of your deck?</Text>
-                    <TextInput editable={true} style={styles.input}
+                <Text style={textStyles.title2}>Whats the title of your deck?</Text>
+                    <TextInput editable={true} style={[styles.input, textStyles.body]}
                     placeholder='Type title here'
                     maxLength={25}
                     value={this.state.title}
@@ -41,10 +44,12 @@ class NewDeck extends Component {
                         this.setState({title: text})
                     }}
                     />
-                {!disabled &&
-                <TouchableOpacity style={[styles.button]} onPress={this.submit}>
-                    <Text style={{color: 'white'}}>Submit</Text>
-                </TouchableOpacity>}
+                <Button
+                    onPress={this.submit}
+                    text='Submit'
+                    textStyle={textStyles.body}
+                    disabled={!this.state.title} 
+                />
               </KeyboardAwareScrollView>
             )
     }

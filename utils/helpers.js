@@ -95,10 +95,12 @@ export function changeNotificationStatus(activate){
                             repeat: 'day'
                         }
                         )
-
+                    
                     AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+                    console.log('turning on notifications')
                 }else{
                     Notifications.cancelAllScheduledNotificationsAsync()
+                    console.log('canceling notifications')
                     AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(false))
                 }
             }

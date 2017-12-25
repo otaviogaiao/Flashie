@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import Swipeout from 'react-native-swipeout'
 
 import { removeCard } from '../actions'
+import { textStyles } from '../utils/styles'
 
 
 
@@ -48,7 +49,7 @@ class ShowCards extends Component {
         return (
             <Swipeout {...swipeSettings}>
                 <View style={[styles.items]}>
-                    <Text style={styles.title} numberOfLines={3}>{item.question}</Text>
+                    <Text style={textStyles.body} numberOfLines={3}>{item.question}</Text>
                 </View>
             </Swipeout>
         )

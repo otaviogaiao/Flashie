@@ -5,6 +5,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { connect } from 'react-redux'
 
 import { addCard } from '../actions'
+import Button from './Button'
+import { textStyles } from '../utils/styles'
 
 class AddCard extends Component {
 
@@ -37,9 +39,10 @@ class AddCard extends Component {
 
     submit = () => {
         let card = {...this.state}
+        card.question = card.question.trim()
+        card.answer = card.answer.trim()
         !card.deckId && (card.deckId = this.props.deckId)
         !card.cardId && (card.cardId = Date.now())
-        console.log('adding card', card)
         this.props.add(card)
         this.props.goBack()
 
@@ -51,8 +54,8 @@ class AddCard extends Component {
         <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
             contentContainerStyle={styles.container}>
             <View style={styles.subContainer}>
-                <Text style={styles.title}>Whats your question?</Text>
-                    <TextInput editable={true} style={styles.input}
+                <Text style={textStyles.title2}>Whats your question?</Text>
+                    <TextInput editable={true} style={[styles.input, textStyles.body]}
                     placeholder='Type question here'
                     maxLength={100}
                     value={this.state.question}
@@ -65,8 +68,8 @@ class AddCard extends Component {
             </View>
 
             <View style={styles.subContainer}>
-                <Text style={styles.title}>Whats your answer?</Text>
-                    <TextInput editable={true} style={styles.input}
+                <Text style={textStyles.title2}>Whats your answer?</Text>
+                    <TextInput editable={true} style={[styles.input, textStyles.body]}
                     placeholder='Type answer here'
                     maxLength={100}
                     value={this.state.answer}
@@ -77,11 +80,8 @@ class AddCard extends Component {
                     }}
                     />
             </View>
-         {this.state.answer && this.state.question &&
-            <TouchableOpacity style={styles.button} onPress={this.submit}>
-                <Text style={{color: 'white'}}>Submit</Text>
-            </TouchableOpacity>
-         }
+             <Button text='Submit' onPress={this.submit} 
+                disabled={!this.state.answer || !this.state.question}/>
         
       </KeyboardAwareScrollView>)
     }
@@ -124,20 +124,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    title: {
-        fontSize: 29
-    },
     input: {
-        fontSize: 25,
         flexDirection: 'row',
         alignSelf: 'stretch',
         margin: 25,
         borderBottomWidth: 1
-    },
-    button: {
-        backgroundColor: 'black',
-        margin: 15,
-        padding: 15,
-        borderRadius: 10
     }
 })

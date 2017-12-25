@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native'
 
+import Button from './Button'
+import { textStyles, colors } from '../utils/styles'
+
 class Card extends Component {
 
     state = {
@@ -66,51 +69,51 @@ class Card extends Component {
         let answered = this.state.answered
         let  { card } = this.props
         return (
-          <View style={{alignItems: 'stretch', justifyContent: 'center'}}>
-            <Animated.View style={[frontAnimatedStyle, styles.flipCard]}>
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            {!answered ? <Animated.View style={[frontAnimatedStyle, styles.flipCard]}>
                 <View style={{alignItems: 'center'}}>
-                    <Text style={[styles.title, styles.textView]}>{card.question}</Text>
+                    <Text style={[textStyles.title1, styles.textView]}>{card.question}</Text>
                 </View>
                            
                 <TouchableOpacity onPress={() => {this.setState({answered: !answered}), this.flipCard()}} style={styles.textView}>
-                    <Text style={styles.text}>Answer</Text>
+                    <Text style={[textStyles.headline, {color: colors.red}]}>See Answer</Text>
                 </TouchableOpacity>
 
                 { card.hasOwnProperty('correct') &&
                     <View style={[styles.textView, styles.bottomText]}>
-                        <Text style={{color: card.correct ? 'green' : 'red', fontSize: 25}}>You got it {card.correct ? 'right' : 'wrong'} last time!</Text>
+                        <Text style={[{color: card.correct ? colors.green : colors.red}, textStyles.title3]}>You got it {card.correct ? 'right' : 'wrong'} last time!</Text>
                     </View>
                       }
             </Animated.View>
-           
+            :
             <Animated.View style={[backAnimatedStyle, styles.flipCard]}>
                 <View style={{alignItems: 'center'}}>
-                    <Text style={[styles.title, styles.textView]}>{card.answer}</Text>
+                    <Text style={[textStyles.title1, styles.textView]}>{card.answer}</Text>
                 </View>
                            
-                <TouchableOpacity onPress={() => {this.setState({answered: !answered}), this.flipCard()}} style={styles.textView}>
-                    <Text style={styles.text}>Question</Text>
+                <TouchableOpacity onPress={() => {this.setState({answered: !answered}), this.flipCard()}} 
+                    style={styles.textView}>
+                    <Text style={[textStyles.headline, {color: colors.red}]}>See Question</Text>
                 </TouchableOpacity>
 
-                <View style={{alignItems: 'stretch'}}>
-                    <TouchableOpacity style={[styles.button, {backgroundColor: 'green'}]} 
-                    onPress={() => this.props.next(true)}>
-                        <Text style={{color: 'white'}}>Correct</Text>
-                    </TouchableOpacity>
+                <View style={styles.buttonView}>
+                    <Button style={[styles.button, {backgroundColor: colors.green}]} text='Correct'
+                     onPress={() => this.props.next(true)} 
+                     textStyle={textStyles.body} />
 
-                    <TouchableOpacity style={[styles.button, {backgroundColor: 'red'}]}  
-                    onPress={() => this.props.next(false)}>
-                        <Text style={{color: 'white'}}>Incorrect</Text>
-                    </TouchableOpacity>
+                     <Button style={[styles.button, {backgroundColor: colors.red}]} 
+                     onPress={() => this.props.next(false)} text='Incorrect' 
+                     textStyle={textStyles.body} />
+
                 </View>
 
                 { card.hasOwnProperty('correct') &&
                         <View style={[styles.textView, styles.bottomText]}>
-                            <Text style={{color: card.correct ? 'green' : 'red', fontSize: 25}}>You got it {card.correct ? 'right' : 'wrong'} last time!</Text>
+                            <Text style={[{color: card.correct ? colors.green : colors.red}, textStyles.title3]}>You got it {card.correct ? 'right' : 'wrong'} last time!</Text>
                         </View>
                 }
 
-            </Animated.View>
+            </Animated.View>}
 
            </View>
         )
@@ -140,11 +143,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 20
     },
     bottomText: {
         alignItems: 'flex-end'
     },
     flipCard: {
+        alignItems: 'center',
+        justifyContent: 'center',
         backfaceVisibility: 'hidden'
+    },
+    buttonView: {
+        alignItems: 'stretch',
+
     }
 })

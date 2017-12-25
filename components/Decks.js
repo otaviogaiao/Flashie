@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { formatNumberOfCards, setNotifications } from '../utils/helpers'
 import { getDecks, getCards } from '../utils/api'
 import { getDecksAction, getAllCards, removeDeck } from '../actions'
+import { textStyles } from '../utils/styles'
 
 import { AsyncStorage } from 'react-native'
 
@@ -60,8 +61,8 @@ class Decks extends Component {
             <Swipeout {...swipeSettings}>
                 <TouchableOpacity onPress={() => navigate('Deck', {deckId: item.deckId})}>
                     <View style={[styles.items]}>
-                        <Text style={styles.title}>{item.title}</Text>
-                        <Text style={styles.subTitle}>
+                        <Text style={textStyles.title2}>{item.title}</Text>
+                        <Text style={textStyles.title3}>
                             {formatNumberOfCards(item)}
                         </Text>
                     </View>
@@ -122,11 +123,5 @@ const styles = StyleSheet.create({
     list: {
         flexDirection: 'row',
         paddingTop: 20
-    },
-    title: {
-        fontSize: 24
-    },
-    subTitle: {
-        fontSize: 16
     }
 })

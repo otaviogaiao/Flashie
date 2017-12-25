@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
+import { textStyles, colors } from '../utils/styles'
 
 import { formatNumberOfCards } from '../utils/helpers'
 import Quiz from './Quiz'
@@ -15,26 +16,26 @@ class Deck extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.titlesContainer}>
-                    <Text style={styles.title}>{deck.title}</Text>
-                    <Text style={styles.subTitle}>{formatNumberOfCards(deck)}</Text>
+                    <Text style={textStyles.title1}>{deck.title}</Text>
+                    <Text style={textStyles.title3}>{formatNumberOfCards(deck)}</Text>
                 </View>
                
 
                 <TouchableOpacity style={[styles.button, styles.buttonAdd]}
                     onPress={() => navigate('AddCard', {deckId: deck.deckId})}>
-                    <Text >Add card</Text>
+                    <Text style={[textStyles.body, {color: colors.purple }]}>Add card</Text>
                 </TouchableOpacity>
                 
                 {deck.cardsId.length !== 0 &&
                 <TouchableOpacity style={[styles.button, styles.buttonAdd]} 
                  onPress={() => navigate('ShowCards', {deckId: deck.deckId})}> 
-                    <Text>Edit deck</Text>
+                    <Text style={[textStyles.body,{color: colors.purple }]}>Edit deck</Text>
                 </TouchableOpacity>}
               
                 {deck.cardsId.length !== 0 &&
                 <TouchableOpacity style={[styles.button, styles.buttonQuiz]}
                     onPress={() => navigate('Quiz', { deck: deck })} >
-                    <Text style={{color: 'white'}}>Start quiz</Text>
+                    <Text style={[textStyles.body, {color: colors.white}]}>Start quiz</Text>
                 </TouchableOpacity>}
 
             </View>
@@ -61,25 +62,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom: 50
     },
-    title: {
-        fontSize: 34
-    },
-    subTitle: {
-        fontSize: 26
-    },
     button: {
         margin: 5,
         padding: 15,
         borderRadius: 10
     },
     buttonAdd: {
-        backgroundColor: 'white',
-        borderColor: 'black',
-        borderWidth: 2
+        backgroundColor: colors.white,
+        borderColor: colors.purple,
+        borderWidth: 1
     },
     buttonQuiz: {
-        backgroundColor: 'black',
-        borderColor: 'black',
+        backgroundColor: colors.purple,
+        borderColor: colors.purple,
         borderWidth: 1
     },
     disabled: {

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { suffleArray } from '../utils/helpers'
 import Card from './Card'
 import { updateLogs } from '../actions'
+import { textStyles, colors } from '../utils/styles'
 
 
 class Quiz extends Component {
@@ -54,15 +55,24 @@ class Quiz extends Component {
         return (
         <View style={styles.container}>
             {index >= cards.length 
-            ? <View>
-                <Text>You finished the quiz!</Text>
+            ? <View style={styles.subContainer}>
+                <View style={styles.resultView}>
+                    <Text style={textStyles.title2}>You finished the quiz!</Text>
 
-                <Text>You got {result}% right!</Text>
+                    <Text style={textStyles.title2}>You got 
+                        <Text style={{ color: result > 50 ? colors.green : colors.red }}> {result}%</Text> right!</Text>
+                </View>
+              
               </View>
-            :<View>
-              <Text style={{fontSize: 25, alignSelf: 'flex-start'}}>{(index + 1) + '/' + cards.length}</Text>
-
-              <Card card={cards[index]} next={this.next} />
+            :<View style={styles.subContainer}>
+              <View style={styles.index}>
+                <Text style={textStyles.title3}>{(index + 1) + '/' + cards.length}</Text>
+              </View>
+              
+              <View style={styles.cards}>
+                <Card card={cards[index]} next={this.next} />
+              </View>
+             
             </View>
             }
             
@@ -92,8 +102,26 @@ export default connect(mapStateToProps, mapDispatchToProps)(Quiz)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        alignItems: 'stretch',
+        justifyContent: 'stretch',
         backgroundColor: 'white'
+    },
+    index: {
+        alignItems: 'stretch',
+        justifyContent: 'stretch',
+        paddingLeft: 20
+    },
+    subContainer:{
+        flex: 1
+    },
+    cards: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    resultView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
