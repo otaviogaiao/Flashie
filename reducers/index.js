@@ -20,7 +20,7 @@ const initialStateConfig = {
 }
 
 function entityReducer (state = initialState, action){
-    console.log('state reducer', state, action)
+    //console.log('state reducer', state, action)
     let { decks, cards } = state
     switch(action.type){
         case ADD_CARD:

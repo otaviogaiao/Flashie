@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import { View, Text, FlatList, StyleSheet, 
         TouchableOpacity } from 'react-native'
-import { AppLoading } from 'expo'
+import { AppLoading, Permissions } from 'expo'
 import Swipeout from 'react-native-swipeout'
 
 import { connect } from 'react-redux'
 
-import { formatNumberOfCards } from '../utils/helpers'
+import { formatNumberOfCards, setNotifications } from '../utils/helpers'
 import { getDecks, getCards } from '../utils/api'
 import { getDecksAction, getAllCards, removeDeck } from '../actions'
 
-// import { AsyncStorage } from 'react-native'
+import { AsyncStorage } from 'react-native'
 
 
 class Decks extends Component {
@@ -20,11 +20,12 @@ class Decks extends Component {
     }
 
     componentDidMount(){
-        console.log('mounting decks...')
         this.props.getDecks()
         this.props.getCards()
+        setNotifications()
         // AsyncStorage.removeItem('FLASHIE_KEY_DECK')
         // AsyncStorage.removeItem('FLASHIE_KEY_CARD')
+        // AsyncStorage.removeItem('NOTIFICATION_KEY_FLASHIE')
     }
 
     onSwipeOpen(item, rowId, direction){

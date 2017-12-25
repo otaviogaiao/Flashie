@@ -1,7 +1,7 @@
 import React from 'react'
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import { Text } from 'react-native'
-import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons'
+import { MaterialCommunityIcons, Entypo, Ionicons } from '@expo/vector-icons'
 
 
 import Deck from './components/Deck'
@@ -10,6 +10,7 @@ import NewDeck from './components/NewDeck'
 import Decks from './components/Decks'
 import ShowCards from './components/ShowCards'
 import Quiz from './components/Quiz'
+import Config from './components/Config'
 
 
 
@@ -35,7 +36,18 @@ const Tabs = TabNavigator({
                 )
             }
         }
-    }   
+    },
+    Config: {
+        screen: Config,
+        navigationOptions: {
+            tabBarLabel: 'Settings',
+            tabBarIcon: ({tintColor}) => {
+                return (
+                    <Ionicons name='ios-settings' size={25} />
+                )
+            }
+        }
+    }
 }, {
     initialRouteName: 'Decks',
     tabBarOptions: {
