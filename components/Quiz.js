@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 
+
 import { suffleArray } from '../utils/helpers'
 import Card from './Card'
 import { updateLogs } from '../actions'
@@ -40,10 +41,10 @@ class Quiz extends Component {
     next(correct){
         if(this.state.index < this.state.cards.length){
             this.setState((oldState) => { 
-                let { cards, total } = oldState
+                let { total, cards, index } = oldState
                 correct && (total = total + 1)
-                cards[oldState.index]['correct'] = correct
-                return {index: oldState.index + 1, cards, total}
+                cards[index] = Object.assign({}, cards, {...cards[index], correct })
+                return {index: index + 1, cards, total}
             }, this.updateProgressCallback)
         }
       
@@ -60,7 +61,7 @@ class Quiz extends Component {
                     <Text style={textStyles.title2}>You finished the quiz!</Text>
 
                     <Text style={textStyles.title2}>You got 
-                        <Text style={{ color: result > 50 ? colors.green : colors.red }}> {result}%</Text> right!</Text>
+                        <Text style={[textStyles.title1, { color: result > 50 ? colors.green : colors.red }]}> {result}%</Text> right!</Text>
                 </View>
               
               </View>
@@ -109,7 +110,8 @@ const styles = StyleSheet.create({
     index: {
         alignItems: 'stretch',
         justifyContent: 'stretch',
-        paddingLeft: 20
+        paddingLeft: 20,
+        paddingTop: 5
     },
     subContainer:{
         flex: 1

@@ -11,6 +11,7 @@ import Decks from './components/Decks'
 import ShowCards from './components/ShowCards'
 import Quiz from './components/Quiz'
 import Config from './components/Config'
+import { colors } from './utils/styles'
 
 
 
@@ -21,7 +22,7 @@ const Tabs = TabNavigator({
             tabBarLabel: 'Decks',
             tabBarIcon: ({tintColor}) => {
                 return (
-                    <MaterialCommunityIcons name='cards-variant' size={25} />
+                    <MaterialCommunityIcons name='cards-variant' size={25} color={tintColor} />
                 )
             }
         }
@@ -32,7 +33,7 @@ const Tabs = TabNavigator({
             tabBarLabel: 'New Deck',
             tabBarIcon: ({tintColor}) => {
                 return (
-                    <Entypo name='plus' size={25}/>
+                    <Entypo name='plus' size={25} color={tintColor}/>
                 )
             }
         }
@@ -43,7 +44,7 @@ const Tabs = TabNavigator({
             tabBarLabel: 'Settings',
             tabBarIcon: ({tintColor}) => {
                 return (
-                    <Ionicons name='ios-settings' size={25} />
+                    <Ionicons name='ios-settings' size={25} color={tintColor}/>
                 )
             }
         }
@@ -51,7 +52,7 @@ const Tabs = TabNavigator({
 }, {
     initialRouteName: 'Decks',
     tabBarOptions: {
-        activeTintColor: '#e91e63',
+        activeTintColor: colors.blue,
         labelStyle: {
           fontSize: 12,
         }
@@ -62,15 +63,20 @@ const Tabs = TabNavigator({
 const Navigator = StackNavigator({
     Decks: {
         screen: Tabs,
-        navigationOptions: {
-            header: null
+        navigationOptions: ({navigation, screenProps}) => {
+            let { index, routes } = navigation.state
+            //TODO: ugly code, find a generic way later
+            let titles = ['My decks', 'Add new deck', 'Settings']
+            return {
+                title: titles[index]
+            }
         }
     },
     Deck: {
         screen: Deck,
         navigationOptions: {
-            title: 'Deck'
-        }
+                title: 'Deck'
+            }
     },
     AddCard: {
         screen: AddCard,

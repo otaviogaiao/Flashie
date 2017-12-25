@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 import { addCard } from '../actions'
 import Button from './Button'
-import { textStyles } from '../utils/styles'
+import { textStyles, colors } from '../utils/styles'
 
 class AddCard extends Component {
 
@@ -53,7 +53,7 @@ class AddCard extends Component {
         return (
         <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
             contentContainerStyle={styles.container}>
-            <View style={styles.subContainer}>
+            <View style={[styles.subContainer]}>
                 <Text style={textStyles.title2}>Whats your question?</Text>
                     <TextInput editable={true} style={[styles.input, textStyles.body]}
                     placeholder='Type question here'
@@ -67,7 +67,7 @@ class AddCard extends Component {
                 />
             </View>
 
-            <View style={styles.subContainer}>
+            <View style={[styles.subContainer]}>
                 <Text style={textStyles.title2}>Whats your answer?</Text>
                     <TextInput editable={true} style={[styles.input, textStyles.body]}
                     placeholder='Type answer here'
@@ -81,6 +81,7 @@ class AddCard extends Component {
                     />
             </View>
              <Button text='Submit' onPress={this.submit} 
+                style={{backgroundColor: colors.pink}}
                 disabled={!this.state.answer || !this.state.question}/>
         
       </KeyboardAwareScrollView>)
@@ -119,15 +120,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     subContainer: {
-        flex: 1,
+        //flex: 1,
         alignSelf: 'stretch',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-start',
+        paddingTop: 15,
+        height: 200
     },
     input: {
         flexDirection: 'row',
         alignSelf: 'stretch',
-        margin: 25,
+        marginTop: 25,
+        marginLeft: 25,
+        marginRight: 25,
+        marginBottom: 10,
         borderBottomWidth: 1
     }
 })

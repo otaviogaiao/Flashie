@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import Button from './Button'
 
 import { addDeckAction } from '../actions'
-import { textStyles } from '../utils/styles'
+import { textStyles, colors } from '../utils/styles'
 
 class NewDeck extends Component {
 
@@ -47,6 +47,7 @@ class NewDeck extends Component {
                 <Button
                     onPress={this.submit}
                     text='Submit'
+                    style={{backgroundColor: colors.pink}}
                     textStyle={textStyles.body}
                     disabled={!this.state.title} 
                 />

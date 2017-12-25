@@ -5,7 +5,6 @@ import { changeNotificationStatus, NOTIFICATION_KEY } from '../utils/helpers'
 import { textStyles, colors } from '../utils/styles'
 import { Permissions, Notifications } from 'expo'
 
-//TODO: colocar um header
 class Config extends Component {
 
     state = {
@@ -70,6 +69,9 @@ class Config extends Component {
                         <Text style={[textStyles.callout]}>You have to allow notifications for this app in settings</Text>
                     </View>}
                 </View>
+                <View style={styles.message}>
+                    <Text style={textStyles.footnote}>More options coming soon!</Text>
+                </View>
                 
             </View>
         )
@@ -85,13 +87,14 @@ const styles = StyleSheet.create({
     },
     item: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginBottom: 15
     },
     subContainer: {
         alignItems: 'stretch',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        marginTop: 35,
+        marginTop: 25,
         paddingRight: 20,
         paddingLeft: 20,
         paddingTop: 30,
@@ -102,6 +105,10 @@ const styles = StyleSheet.create({
         borderTopColor: '#D7DEE0'
     },
     warning: {
-        margin: 15
+        marginBottom: 15
+    },
+    message: {
+        alignItems: 'center',
+        paddingTop: 5
     }
 })

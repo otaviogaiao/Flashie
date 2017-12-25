@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     buttonQuiz: {
-        backgroundColor: colors.purple,
-        borderColor: colors.purple,
+        backgroundColor: colors.orange,
+        borderColor: colors.orange,
         borderWidth: 1
     },
     disabled: {

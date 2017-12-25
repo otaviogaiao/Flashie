@@ -59,7 +59,7 @@ class Decks extends Component {
 
         return (
             <Swipeout {...swipeSettings}>
-                <TouchableOpacity onPress={() => navigate('Deck', {deckId: item.deckId})}>
+                <TouchableOpacity onPress={() => navigate('Deck', {deckId: item.deckId, title: item.title})}>
                     <View style={[styles.items]}>
                         <Text style={textStyles.title2}>{item.title}</Text>
                         <Text style={textStyles.title3}>
@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     list: {
-        flexDirection: 'row',
-        paddingTop: 20
+        flexDirection: 'row'
     }
 })
