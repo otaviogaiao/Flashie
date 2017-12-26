@@ -24,11 +24,12 @@ class NewDeck extends Component {
         }
        
         !deck['cardsId'] && (deck['cardsId'] = [])
-        //TODO: FAZER COM QUE UM ACONTECA DEPOIS DO OUTRO, DESCOBRIR COMO COLOCAR THEN
-
-        add(deck)
-        goBack()
-        this.setState({title: null})
+  
+        add(deck).then(() => {
+            this.props.navigation.navigate('Deck', {deckId: deck.deckId, title: deck.title})
+            this.setState({title: null})
+            }
+        )
     }
 
     render(){
@@ -60,10 +61,7 @@ class NewDeck extends Component {
 function mapDispatchToProps(dispatch, { navigation }){
     return {
         add: (deck) => {
-            dispatch(addDeckAction(deck))
-        },
-        goBack: () => {
-            navigation.goBack()
+            return dispatch(addDeckAction(deck))
         }
     }
 }
@@ -100,6 +98,5 @@ const styles = StyleSheet.create({
 })
 
 NewDeck.propTypes = {
-    add: PropTypes.func.isRequired,
-    goBack: PropTypes.func.isRequired
+    add: PropTypes.func.isRequired
 }
