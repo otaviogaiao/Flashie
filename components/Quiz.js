@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import Moment from 'moment'
 
 import { shuffleArray, cancelTodaysNotification } from '../utils/helpers'
 import Card from './Card'
@@ -9,7 +10,7 @@ import { updateLogs } from '../actions'
 import { textStyles, colors } from '../utils/styles'
 import Button from './Button'
 
-
+//TODO: render a chart with my performance
 class Quiz extends Component {
 
     constructor(props){
@@ -62,6 +63,25 @@ class Quiz extends Component {
         })
     }
 
+    renderBestScore = () => {
+        let { deck } = this.state
+        if(deck !== null){//deck is null in the beginning, this was breaking the app
+            let bestScore = this.state.deck.logs.reduce((max, log) => {
+                if(log.correctPct >= max.correctPct){
+                    return log
+                } 
+                return max
+            })
+    
+            return (
+                <View>
+                    <Text style={textStyles.footnote}>Your best score is {bestScore.correctPct}% in {Moment(new Date(bestScore.day)).format('DD/MM/YYYY')}</Text>
+                </View>
+            )
+        }
+        
+    }
+
     render(){
         const { cards, index, total } = this.state
         let result = total/cards.length * 100
@@ -75,6 +95,8 @@ class Quiz extends Component {
                     <Text style={textStyles.title2}>You got 
                         <Text style={[textStyles.title1, { color: result > 50 ? colors.green : colors.red }]}> {result}%</Text> right!
                     </Text>
+
+                    {this.renderBestScore()}
 
                     <View>
                         <Button text='Restart Quiz' style={{backgroundColor: colors.green}} 

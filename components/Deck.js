@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -8,12 +8,10 @@ import { formatNumberOfCards } from '../utils/helpers'
 import Quiz from './Quiz'
 import Button from './Button'
 
-
-class Deck extends Component {
-
-    render(){
-        const { navigate } = this.props.navigation
-        const { deck } = this.props
+// Stateless Components ROCKS!!!
+function Deck(props){
+        const { navigate } = props.navigation
+        const { deck } = props
 
         return (
             <View style={styles.container}>
@@ -41,8 +39,8 @@ class Deck extends Component {
 
             </View>
         )
-    }
 }
+
 
 function mapStateToProps(state, {navigation}){
     let { decks } = state.entity
