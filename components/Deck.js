@@ -6,6 +6,7 @@ import { textStyles, colors } from '../utils/styles'
 
 import { formatNumberOfCards } from '../utils/helpers'
 import Quiz from './Quiz'
+import Button from './Button'
 
 
 class Deck extends Component {
@@ -21,23 +22,22 @@ class Deck extends Component {
                     <Text style={textStyles.title3}>{formatNumberOfCards(deck)}</Text>
                 </View>
                
-
-                <TouchableOpacity style={[styles.button, styles.buttonAdd]}
-                    onPress={() => navigate('AddCard', {deckId: deck.deckId})}>
-                    <Text style={[textStyles.body, {color: colors.purple }]}>Add card</Text>
-                </TouchableOpacity>
+                <Button style={[styles.button, styles.buttonAdd]} 
+                    onPress={() => navigate('AddCard', {deckId: deck.deckId})}
+                    textStyle={[textStyles.body, {color: colors.purple }]}
+                    text='Add card' />
                 
                 {deck.cardsId.length !== 0 &&
-                <TouchableOpacity style={[styles.button, styles.buttonAdd]} 
-                 onPress={() => navigate('ShowCards', {deckId: deck.deckId})}> 
-                    <Text style={[textStyles.body,{color: colors.purple }]}>Edit deck</Text>
-                </TouchableOpacity>}
+                 <Button style={[styles.button, styles.buttonAdd]} 
+                    onPress={() => navigate('ShowCards', {deckId: deck.deckId})}
+                    textStyle={[textStyles.body, {color: colors.purple }]}
+                    text='Edit deck' />}
               
                 {deck.cardsId.length !== 0 &&
-                <TouchableOpacity style={[styles.button, styles.buttonQuiz]}
-                    onPress={() => navigate('Quiz', { deck: deck })} >
-                    <Text style={[textStyles.body, {color: colors.white}]}>Start quiz</Text>
-                </TouchableOpacity>}
+                <Button style={[styles.button, styles.buttonQuiz]}
+                    onPress={() => navigate('Quiz', { deck: deck })}
+                    text='Start quiz'
+                    textStyle={[textStyles.body, {color: colors.white}]} />}
 
             </View>
         )
