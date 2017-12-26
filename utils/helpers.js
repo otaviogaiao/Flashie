@@ -22,39 +22,42 @@ export function shuffleArray(array) {
     return input;
 }
 
+function notification(){
+    let tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    tomorrow.setHours(19)
+    tomorrow.setMinutes(0)
+
+    Notifications.scheduleLocalNotificationAsync(
+        {
+            title: 'Remember to practice!',
+            body: "don't forget to study your flashcards today!",
+            ios: {
+              sound: true
+            },
+            android: {
+              sound: true,
+              priority: 'high',
+              sticky: false,
+              vibrate: true
+            }
+        },
+        {
+          time: tomorrow,
+          repeat: 'day'
+        }
+      )
+}
+
 export function setNotifications(){
     return AsyncStorage.getItem(NOTIFICATION_KEY).then(JSON.parse)
         .then((active) => {
             if(active === null){
                 Permissions.askAsync(Permissions.NOTIFICATIONS).then(({status}) => {
                     if(status === 'granted'){
-                        console.log('notifications allowed')
                         Notifications.cancelAllScheduledNotificationsAsync()
 
-                        let tomorrow = new Date()
-                        tomorrow.setDate(tomorrow.getDate() + 1)
-                        tomorrow.setHours(19)
-                        tomorrow.setMinutes(0)
-
-                        Notifications.scheduleLocalNotificationAsync(
-                            {
-                                title: 'Remember to practice!',
-                                body: "don't forget to study your flashcards today!",
-                                ios: {
-                                  sound: true
-                                },
-                                android: {
-                                  sound: true,
-                                  priority: 'high',
-                                  sticky: false,
-                                  vibrate: true
-                                }
-                            },
-                            {
-                              time: tomorrow,
-                              repeat: 'day'
-                            }
-                          )
+                       notification()
 
                        AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
                     }
@@ -71,38 +74,25 @@ export function changeNotificationStatus(activate){
                 if(activate){
                     Notifications.cancelAllScheduledNotificationsAsync()
 
-                    let tomorrow = new Date()
-                    tomorrow.setDate(tomorrow.getDate() + 1)
-                    tomorrow.setHours(19)
-                    tomorrow.setMinutes(0)
-
-                    Notifications.scheduleLocalNotificationAsync(
-                        {
-                            title: 'Remember to practice!',
-                            body: "don't forget to study your flashcards today!",
-                            ios: {
-                                sound: true
-                            },
-                            android: {
-                                sound: true,
-                                priority: 'high',
-                                sticky: false,
-                                vibrate: true
-                            }
-                        },
-                        {
-                            time: tomorrow,
-                            repeat: 'day'
-                        }
-                        )
+                    notification()
                     
                     AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
-                    console.log('turning on notifications')
                 }else{
                     Notifications.cancelAllScheduledNotificationsAsync()
-                    console.log('canceling notifications')
+                
                     AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(false))
                 }
+            }
+        })
+}
+
+export function cancelTodaysNotification(){
+    return AsyncStorage.getItem(NOTIFICATION_KEY).then(JSON.parse)
+        .then((active) => {
+            if(active){
+                Notification.cancelAllScheduledNotificationsAsync()
+
+                notification()
             }
         })
 }

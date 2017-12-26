@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { shuffleArray } from '../utils/helpers'
+import { shuffleArray, cancelTodaysNotification } from '../utils/helpers'
 import Card from './Card'
 import { updateLogs } from '../actions'
 import { textStyles, colors } from '../utils/styles'
@@ -34,8 +34,9 @@ class Quiz extends Component {
 
             total = total/this.state.cards.length * 100
             deck = {...deck , logs: deck.logs.concat([{day: Date.now(), correctPct: total}])}
-            console.log('deck', deck)
             this.props.update(deck, this.state.cards)
+            //since the user finished a quiz, we cancel today's notification 
+            cancelTodaysNotification()
         }
     }
 

@@ -21,6 +21,10 @@ class Config extends Component {
        
     }
 
+    componentWillUnmount(){
+        AppState.removeEventListener('change')
+    }
+
     componentWillUpdate(nextProps, nextState){
         if(nextState.allowed && nextState.notifications !== this.state.notifications){
             changeNotificationStatus(nextState.notifications)
