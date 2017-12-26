@@ -23,7 +23,8 @@ const defaultStyles = StyleSheet.create({
         backgroundColor: 'black',
         margin: 15,
         padding: 15,
-        borderRadius: 10
+        borderRadius: 10,
+        alignItems: 'center'
     },
 })
 

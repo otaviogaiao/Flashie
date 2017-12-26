@@ -3,10 +3,11 @@ import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { suffleArray } from '../utils/helpers'
+import { shuffleArray } from '../utils/helpers'
 import Card from './Card'
 import { updateLogs } from '../actions'
 import { textStyles, colors } from '../utils/styles'
+import Button from './Button'
 
 
 class Quiz extends Component {
@@ -24,7 +25,7 @@ class Quiz extends Component {
     }
 
     componentDidMount(){
-        this.setState(() => ({cards: suffleArray(this.props.cards), deck: this.props.deck, index: 0, total: 0}))
+        this.setState(() => ({cards: shuffleArray(this.props.cards), deck: this.props.deck, index: 0, total: 0}))
     }
 
     updateProgressCallback(){
@@ -50,6 +51,16 @@ class Quiz extends Component {
       
     }
 
+    restartQuiz = () => {
+        this.setState((oldState) => {
+            return {
+                cards: shuffleArray(oldState.cards),
+                index: 0,
+                total: 0
+            }
+        })
+    }
+
     render(){
         const { cards, index, total } = this.state
         let result = total/cards.length * 100
@@ -61,7 +72,15 @@ class Quiz extends Component {
                     <Text style={textStyles.title2}>You finished the quiz!</Text>
 
                     <Text style={textStyles.title2}>You got 
-                        <Text style={[textStyles.title1, { color: result > 50 ? colors.green : colors.red }]}> {result}%</Text> right!</Text>
+                        <Text style={[textStyles.title1, { color: result > 50 ? colors.green : colors.red }]}> {result}%</Text> right!
+                    </Text>
+
+                    <View>
+                        <Button text='Restart Quiz' style={{backgroundColor: colors.green}} 
+                            onPress={this.restartQuiz}/>
+                        <Button text='Go Back' style={{backgroundColor: colors.tealBlue}}
+                            onPress={() => this.props.navigation.goBack()}/>
+                    </View>
                 </View>
               
               </View>
