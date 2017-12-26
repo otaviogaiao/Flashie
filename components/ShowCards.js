@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Entypo, FontAwesome } from '@expo/vector-icons'
+import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 import Swipeout from 'react-native-swipeout'
@@ -126,3 +127,9 @@ const styles = StyleSheet.create({
         fontSize: 18
     }
 })
+
+ShowCards.propTypes = {
+    delete: PropTypes.func.isRequired,
+    cards: PropTypes.array.isRequired,
+    deck: PropTypes.object.isRequired
+}

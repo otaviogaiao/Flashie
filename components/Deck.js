@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { textStyles, colors } from '../utils/styles'
 
 import { formatNumberOfCards } from '../utils/helpers'
@@ -81,3 +82,8 @@ const styles = StyleSheet.create({
         opacity: 0.5
     }
 })
+
+Deck.propTypes = {
+    deck: PropTypes.object.isRequired,
+    navigation: PropTypes.object.isRequired
+}

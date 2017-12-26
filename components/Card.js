@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native'
+import PropTypes from 'prop-types'
 
 import Button from './Button'
 import { textStyles, colors } from '../utils/styles'
@@ -159,3 +160,8 @@ const styles = StyleSheet.create({
 
     }
 })
+
+Card.propTypes = {
+    card: PropTypes.object.isRequired,
+    next: PropTypes.func.isRequired
+}

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
 import Button from './Button'
 
@@ -97,3 +98,8 @@ const styles = StyleSheet.create({
         opacity: 0.7
     }
 })
+
+NewDeck.propTypes = {
+    add: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired
+}

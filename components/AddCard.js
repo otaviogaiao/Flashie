@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity,
     TextInput } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
 import { addCard } from '../actions'
 import Button from './Button'
@@ -137,3 +138,10 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1
     }
 })
+
+AddCard.propTypes = {
+    add: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+    card: PropTypes.object,
+    deckId: PropTypes.number.isRequired
+}

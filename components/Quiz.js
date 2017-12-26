@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-
+import PropTypes from 'prop-types'
 
 import { suffleArray } from '../utils/helpers'
 import Card from './Card'
@@ -127,3 +127,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 })
+
+Quiz.propTypes = {
+    update: PropTypes.func.isRequired,
+    cards: PropTypes.array.isRequired,
+    deck: PropTypes.object.isRequired
+}

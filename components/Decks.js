@@ -3,6 +3,7 @@ import { View, Text, FlatList, StyleSheet,
         TouchableOpacity } from 'react-native'
 import { AppLoading, Permissions } from 'expo'
 import Swipeout from 'react-native-swipeout'
+import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
@@ -124,3 +125,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     }
 })
+
+Decks.propTypes = {
+    getDecks: PropTypes.func.isRequired,
+    getCards: PropTypes.func.isRequired,
+    delete: PropTypes.func.isRequired,
+    decks:  PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired
+}
