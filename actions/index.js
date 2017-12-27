@@ -12,10 +12,10 @@ export const GET_DECKS = 'FETCH_DECKS'
 export const GET_ALL_CARDS = 'GET_ALL_CARDS'
 
 export const LOADING = 'LOADING'
-
+export const UPDATE_CONFIG_NOTIFICATION = 'UPDATE_CONFIG_NOTIFICATION'
 
 import { getDecks, saveDeck, getDeck, addCard as addCardApi, getCards, deleteDeck, removeCard as removeCardApi,
-        updateLogs as updateLogsApi} 
+        updateLogs as updateLogsApi, loadNotificationConfig as loadConfigApi} 
             from '../utils/api'
 
 
@@ -146,6 +146,30 @@ export function updateLogs(deck, cards){
                 })
             })
        
+    }
+}
+
+export function loadNotificationConfig(){
+    return function(dispatch){
+        dispatch(loading(true))
+        loadConfigApi().then(({allowed, notifications}) => {
+            dispatch(loading(false))
+            return dispatch({
+                type: UPDATE_CONFIG_NOTIFICATION,
+                allowed,
+                notifications
+            })
+        })
+    }
+}
+
+export function updateNotificationConfig(allowed, notifications){
+    return function (dispatch){
+        return dispatch({
+            type: UPDATE_CONFIG_NOTIFICATION,
+            allowed,
+            notifications
+        })
     }
 }
 

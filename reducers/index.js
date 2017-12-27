@@ -1,5 +1,5 @@
 import { ADD_DECK, REMOVE_DECK, GET_DECKS, ADD_CARD, REMOVE_CARD,
-    LOADING, GET_ALL_CARDS, UPDATE_LOGS } from '../actions'
+    LOADING, GET_ALL_CARDS, UPDATE_LOGS, UPDATE_CONFIG_NOTIFICATION } from '../actions'
 
 import { combineReducers } from 'redux'
 import _omit from 'lodash.omit'
@@ -16,7 +16,9 @@ const initialState = {
 }
 
 const initialStateConfig = {
-    loading: false
+    loading: false,
+    allowed: false,
+    notifications: false
 }
 
 function entityReducer (state = initialState, action){
@@ -88,11 +90,19 @@ function entityReducer (state = initialState, action){
 }
 
 function configReducer(state = initialStateConfig, action){
+   
     switch(action.type){
         case LOADING:
             return {
                 ...state,
                 loading: action.loading
+            }
+        case UPDATE_CONFIG_NOTIFICATION:
+            console.log('config state', state)
+            return {
+                ...state, 
+                allowed: action.allowed,
+                notifications: action.notifications
             }
         default:
             return state

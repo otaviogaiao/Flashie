@@ -7,7 +7,7 @@ Este projeto foi criado utilizando o `create-react-native-app` e roda utilizando
 
 Atenção!! É necessário ter o Node.js instalado na sua máquina.
 
-Este App foi testado em um Iphone 7 físico. 
+Este App foi testado apenas no iOS para Iphones. OBS: Os simuladores não suportam notificações, por isso a tela de Config, na parte de notificações fica inconsistente.
 
 # Instalação
 

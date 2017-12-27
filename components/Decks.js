@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 
 import { formatNumberOfCards, setNotifications } from '../utils/helpers'
 import { getDecks, getCards } from '../utils/api'
-import { getDecksAction, getAllCards, removeDeck } from '../actions'
+import { getDecksAction, getAllCards, removeDeck, updateNotificationConfig } from '../actions'
 import { textStyles } from '../utils/styles'
 
 import { AsyncStorage } from 'react-native'
@@ -24,7 +24,8 @@ class Decks extends Component {
     componentDidMount(){
         this.props.getDecks()
         this.props.getCards()
-        setNotifications()
+       
+        // setNotifications()
         // AsyncStorage.removeItem('FLASHIE_KEY_DECK')
         // AsyncStorage.removeItem('FLASHIE_KEY_CARD')
         // AsyncStorage.removeItem('NOTIFICATION_KEY_FLASHIE')
@@ -96,7 +97,8 @@ function mapDispatchToProps(dispatch){
     return {
         getDecks: () => dispatch(getDecksAction()),
         getCards: () => dispatch(getAllCards()),
-        delete: (d) => dispatch(removeDeck(d))
+        delete: (d) => dispatch(removeDeck(d)),
+        updateConfig: () => dispatch(updateNotificationConfig())
     }
 }
 
@@ -130,6 +132,6 @@ Decks.propTypes = {
     getDecks: PropTypes.func.isRequired,
     getCards: PropTypes.func.isRequired,
     delete: PropTypes.func.isRequired,
-    decks:  PropTypes.object.isRequired,
-    loading: PropTypes.bool.isRequired
+    decks:  PropTypes.object,
+    loading: PropTypes.bool
 }

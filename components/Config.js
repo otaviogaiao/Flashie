@@ -1,23 +1,20 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Switch, AsyncStorage, AppState } from 'react-native'
+import { connect } from 'react-redux'
 
-import { changeNotificationStatus, NOTIFICATION_KEY } from '../utils/helpers'
+import { changeNotificationStatus, NOTIFICATION_KEY, setNotifications } from '../utils/api'
 import { textStyles, colors } from '../utils/styles'
-import { Permissions, Notifications } from 'expo'
+import { Permissions, Notifications, AppLoading } from 'expo'
+import { loadNotificationConfig, updateNotificationConfig } from '../actions'
 
 class Config extends Component {
 
-    state = {
-        notifications: false,
-        allowed: false
-    }
-
     componentDidMount(){
+        setNotifications().then(() => this.props.loadConfig())
+
         AppState.addEventListener('change', this._handleAppStateChange)//this is necessary in the cases
         //where the user has notifications disabled for the app, then goes to iphone settings and allow notifications
         //so we have to change the state of our app
-
-        this._loadNotificationState()
        
     }
 
@@ -26,49 +23,35 @@ class Config extends Component {
     }
 
     componentWillUpdate(nextProps, nextState){
-        if(nextState.allowed && nextState.notifications !== this.state.notifications){
-            changeNotificationStatus(nextState.notifications)
+        if(nextProps.allowed && nextProps.notifications !== this.props.notifications){
+            changeNotificationStatus(nextProps.notifications)
         }
     }
 
     _handleAppStateChange = (nextAppState) => {
         if(nextAppState === 'active'){
-            this._loadNotificationState()
+            this.props.loadConfig()
         }
     }
 
-    _loadNotificationState = () => {
-        Permissions.getAsync(Permissions.NOTIFICATIONS).then(({status}) => {
-            AsyncStorage.getItem(NOTIFICATION_KEY).then(JSON.parse)
-            .then(data => {
-                let notifications = (data === 'true' || data === true)
-                let allowed = status === 'granted'
-                this.setState({
-                    allowed,
-                    notifications
-                })
-            })
-        })
-    }
-
-    handleSwitchValueChange = () => {
-        this.setState((oldState) => {
-            return {notifications: !oldState.notifications}
-        })
+    handleSwitchValueChange = (value) => {
+        this.props.updateConfig(this.props.allowed, value)
     }
 
     render(){
         return (
-            <View style={styles.container}>
+            this.props.loading 
+            ? <AppLoading />
+            : <View style={styles.container}>
                 <View style={[styles.subContainer]}>
                    <View style={styles.item}>
                         <Text style={textStyles.title3}>Allow Notifications</Text>
-                        <Switch value={this.state.allowed && this.state.notifications} onValueChange={this.handleSwitchValueChange}
-                        disabled={!this.state.allowed}/>
+                        <Switch value={this.props.allowed && this.props.notifications} onValueChange={this.handleSwitchValueChange}
+                        disabled={!this.props.allowed}/>
                     
                     </View>
                   
-                 {!this.state.allowed &&
+                 {!this.props.allowed &&
                     <View style={styles.warning}>
                         <Text style={[textStyles.callout]}>You have to allow notifications for this app in settings</Text>
                     </View>}
@@ -82,7 +65,22 @@ class Config extends Component {
     }
 }
 
-export default Config
+function mapDispatchToProps(dispatch){
+    return {
+        loadConfig: () => dispatch(loadNotificationConfig()),
+        updateConfig: (allowed, notifications) =>  dispatch(updateNotificationConfig(allowed, notifications))
+    }
+}
+
+function mapStateToProps({config}){
+    return {
+        allowed: config.allowed,
+        notifications: config.notifications,
+        loading: config.loading
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Config)
 
 const styles = StyleSheet.create({
     container: {

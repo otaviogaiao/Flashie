@@ -1,6 +1,8 @@
 import { AsyncStorage } from 'react-native'
+import { Permissions, Notifications } from 'expo'
 const FLASHIE_KEY_DECK = 'FLASHIE_KEY_DECK'
 const FLASHIE_KEY_CARD = 'FLASHIE_KEY_CARD'
+export const NOTIFICATION_KEY = 'NOTIFICATION_KEY_FLASHIE'
 
 
 //get all decks and cards
@@ -75,6 +77,99 @@ export function updateLogs(deck, cards){
         return getCards().then((c) => {
             let newCards = cards.map((card) => ({[card.cardId]: card}))
             return AsyncStorage.mergeItem(FLASHIE_KEY_CARD, JSON.stringify(Object.assign({}, c, ...newCards)))
+        })
+    })
+}
+
+
+
+
+function notification(){
+    let tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    tomorrow.setHours(19)
+    tomorrow.setMinutes(0)
+
+    Notifications.scheduleLocalNotificationAsync(
+        {
+            title: 'Remember to practice!',
+            body: "don't forget to study your flashcards today!",
+            ios: {
+              sound: true
+            },
+            android: {
+              sound: true,
+              priority: 'high',
+              sticky: false,
+              vibrate: true
+            }
+        },
+        {
+          time: tomorrow,
+          repeat: 'day'
+        }
+      )
+}
+
+export function setNotifications(){
+    return AsyncStorage.getItem(NOTIFICATION_KEY).then(JSON.parse)
+        .then((active) => {
+            if(active === null){
+                return Permissions.askAsync(Permissions.NOTIFICATIONS).then(({status}) => {
+ 
+                    if(status === 'granted'){
+                        Notifications.cancelAllScheduledNotificationsAsync()
+
+                        notification()
+
+                        return AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+                    }
+                })
+            }
+        })
+}
+
+export function changeNotificationStatus(activate){
+    return AsyncStorage.getItem(NOTIFICATION_KEY).then(JSON.parse)
+        .then((active) => {
+            if(active !== null){
+                
+                if(activate){
+                    Notifications.cancelAllScheduledNotificationsAsync()
+
+                    notification()
+                    
+                    AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+                }else{
+                    Notifications.cancelAllScheduledNotificationsAsync()
+                
+                    AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(false))
+                }
+            }
+        })
+}
+
+export function cancelTodaysNotification(){
+    return AsyncStorage.getItem(NOTIFICATION_KEY).then(JSON.parse)
+        .then((active) => {
+            if(active){
+                Notifications.cancelAllScheduledNotificationsAsync()
+
+                notification()
+            }
+        })
+}
+
+export function loadNotificationConfig() {
+    return Permissions.getAsync(Permissions.NOTIFICATIONS).then(({status}) => {
+        return AsyncStorage.getItem(NOTIFICATION_KEY).then(JSON.parse)
+        .then(data => {
+            let notifications = (data === 'true' || data === true)
+            let allowed = status === 'granted'
+            return {
+                allowed,
+                notifications
+            }
         })
     })
 }

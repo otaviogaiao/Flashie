@@ -37,10 +37,5 @@ Button.propTypes = {
         PropTypes.array,
         PropTypes.object
     ]),
-    disabled: PropTypes.bool,
-    textStyle: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.array,
-        PropTypes.object
-    ])
+    disabled: PropTypes.bool
 }

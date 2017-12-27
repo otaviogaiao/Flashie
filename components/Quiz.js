@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Moment from 'moment'
 
-import { shuffleArray, cancelTodaysNotification } from '../utils/helpers'
+import { shuffleArray } from '../utils/helpers'
+import { cancelTodaysNotification } from '../utils/api'
 import Card from './Card'
 import { updateLogs } from '../actions'
 import { textStyles, colors } from '../utils/styles'
@@ -65,7 +66,7 @@ class Quiz extends Component {
 
     renderBestScore = () => {
         let { deck } = this.state
-        if(deck !== null){//deck is null in the beginning, this was breaking the app
+        if(deck !== null && deck.logs.length > 0){//deck is null in the beginning, this was breaking the app
             let bestScore = this.state.deck.logs.reduce((max, log) => {
                 if(log.correctPct >= max.correctPct){
                     return log
@@ -146,12 +147,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'stretch',
-        justifyContent: 'stretch',
+        justifyContent: 'center',
         backgroundColor: 'white'
     },
     index: {
         alignItems: 'stretch',
-        justifyContent: 'stretch',
+        justifyContent: 'center',
         paddingLeft: 20,
         paddingTop: 5
     },
